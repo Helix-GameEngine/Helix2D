@@ -130,12 +130,26 @@ void helix2d::Painter::setColor(Color c)
 
 void helix2d::Painter::setFlipX(bool flipX)
 {
-	fFlipX += flipX * -2.0f;
+	if (flipX)
+	{
+		fFlipX = -1.0f;
+	}
+	else
+	{
+		fFlipX = 1.0f;
+	}
 }
 
 void helix2d::Painter::setFlipY(bool flipY)
 {
-	fFlipY += flipY * -2.0f;
+	if (flipY)
+	{
+		fFlipY = -1.0f;
+	}
+	else
+	{
+		fFlipY = 1.0f;
+	}
 }
 
 void helix2d::Painter::enableTick(bool b)
