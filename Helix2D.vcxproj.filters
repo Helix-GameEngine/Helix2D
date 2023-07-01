@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="头文件\source">
+      <UniqueIdentifier>{ed80bc3d-9042-4c0c-99d6-445cc9e8e80e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\source\Base">
+      <UniqueIdentifier>{7322a14a-5148-4f41-8027-608148c0c280}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\source\Render">
+      <UniqueIdentifier>{7b61cc0c-d2b9-447e-b3bb-a6c56ef27781}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\source\Macro">
+      <UniqueIdentifier>{dc49efaa-c409-407b-9dad-0f0c0ff57357}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\source\Module">
+      <UniqueIdentifier>{e716d72d-0dfb-401c-afc6-ffbbbf97ab16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\source\Inbuilt">
+      <UniqueIdentifier>{3f88774f-6189-4602-bb0d-6ab9a3189795}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\source\Tool">
+      <UniqueIdentifier>{5285a19f-7eba-4cdf-ba60-493f179ab4f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\source\Render\Image">
+      <UniqueIdentifier>{aed92ca4-39f2-49b8-80af-7e455336053b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\source\Render\Shape">
+      <UniqueIdentifier>{471d507c-1f3d-4d60-b529-3ce8bbd78d01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\source\Render\Text">
+      <UniqueIdentifier>{d7d09c2b-07ce-4b16-ac70-f7a2c5a9c863}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\source\Render\Camera">
+      <UniqueIdentifier>{ca8399f7-ae04-484b-9eac-a8377a44be0e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Window.cpp">
+      <Filter>头文件\source\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Module.cpp">
+      <Filter>头文件\source\Module</Filter>
+    </ClCompile>
+    <ClCompile Include="Inbuilt.cpp">
+      <Filter>头文件\source\Inbuilt</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool.cpp">
+      <Filter>头文件\source\Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>头文件\source\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Painter.cpp">
+      <Filter>头文件\source\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Image.cpp">
+      <Filter>头文件\source\Render\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>头文件\source\Render\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="Shape.cpp">
+      <Filter>头文件\source\Render\Shape</Filter>
+    </ClCompile>
+    <ClCompile Include="Text.cpp">
+      <Filter>头文件\source\Render\Text</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>头文件\source\Render\Camera</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="h2dBase.h">
+      <Filter>头文件\source\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="h2dMacros.h">
+      <Filter>头文件\source\Macro</Filter>
+    </ClInclude>
+    <ClInclude Include="h2dModule.h">
+      <Filter>头文件\source\Module</Filter>
+    </ClInclude>
+    <ClInclude Include="h2dInbuilt.h">
+      <Filter>头文件\source\Inbuilt</Filter>
+    </ClInclude>
+    <ClInclude Include="h2dTool.h">
+      <Filter>头文件\source\Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="h2dRender.h">
+      <Filter>头文件\source\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="h2dImage.h">
+      <Filter>头文件\source\Render\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="h2dShape.h">
+      <Filter>头文件\source\Render\Shape</Filter>
+    </ClInclude>
+    <ClInclude Include="h2dText.h">
+      <Filter>头文件\source\Render\Text</Filter>
+    </ClInclude>
+    <ClInclude Include="h2dCamera.h">
+      <Filter>头文件\source\Render\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="helix2d.h">
+      <Filter>头文件\source</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
