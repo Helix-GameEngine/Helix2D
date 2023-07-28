@@ -8,6 +8,7 @@ namespace helix2d
 	class Window;
 	class Module;
 
+	//渲染器
 	class Renderer 
 	{
 		friend class Window;
@@ -18,14 +19,19 @@ namespace helix2d
 		Renderer();
 	public:
 
+		//创建设备相关资源
 		bool createDeviceResources();
+		//销毁设备相关资源
 		void discardDeviceResources();
 	public:
 
+		//创建设备无关资源
 		static bool createDeviceIndependentResources();
+		//销毁设备无关资源
 		static void discardResources();
 	private:
 
+		//渲染
 		void _render(float delta);
 	public:
 
@@ -57,6 +63,7 @@ namespace helix2d
 		Window* window;
 	};
 
+	//颜色
 	class Color
 	{
 	public:
@@ -68,8 +75,8 @@ namespace helix2d
 		Color(long rgb, float a = 1.0f);
 	public:
 
+		//设置颜色值
 		void setColor(float r, float g, float b, float a = 1.0f);
-
 		void setColor(long rgb, float a = 1.0f);
 	public:
 
@@ -227,117 +234,226 @@ namespace helix2d
 		float a;
 	};
 
+	//画家
 	class Painter
 	{
 		friend class Window;
 		friend class Renderer;
-		friend class Module;
 	public:
 
 		Painter();
 	public:
 
+		//添加子画家
 		void addPainter(Painter* pPainter);
+
+		//添加模块
 		void addModule(Module* pMod);
 	public:
 
+		//设置坐标
 		void setPos(float x, float y);
 		void setPos(Vector2 pos);
 
+		//设置X轴坐标
 		void setPosX(float x);
+		//设置Y轴坐标
 		void setPosY(float y);
 
+		//设置缩放
 		void setScale(Scale scale);
 		void setScale(float scaleX, float scaleY);
 
+		//设置锚点
 		void setAnchor(Vector2 anchor);
 		void setAnchor(float x, float y);
 
+		//设置旋转角度
 		void setAngle(float angle);
 
+		//设置颜色
 		void setColor(Color c);
 
+		//设置是否X轴翻转（上下翻转）
 		void setFlipX(bool flipX);
+		//设置是否Y轴翻转（左右翻转）
 		void setFlipY(bool flipY);
 
+		//设置速度
+		void setVelocity(Vector2 v);
+		void setVelocity(float vx, float vy);
+		//设置X轴速度
+		void setVelocityX(float vx);
+		//设置Y轴速度
+		void setVelocityY(float vy);
+
+		//设置质量
+		void setMass(float m);
+
+		//设置渲染顺序
+		void setOrder(size_t nOrder);
+
+		//设置是否启用Tick方法
 		void enableTick(bool b);
+		//设置是否启用Render方法
+		void enableRender(bool b);
+		//设置是否更新
+		void enableUpdate(bool b);
 	public:
 
+		//移动坐标
 		void movePos(float x, float y);
 		void movePos(Vector2 pos);
 
+		//移动X轴坐标
 		void movePosX(float x);
+		//移动Y轴坐标
 		void movePosY(float y);
 
+		//以当前方向前进
+		void moveAhead(float size);
+		//以指定方向前进
+		void moveAhead(float size, float angle);
+
+		//旋转
 		void rotate(float angle);
 
+		//X轴翻转（上下翻转）
 		void flipX();
+		//Y轴翻转（左右翻转）
 		void flipY();
+
+		//增加速度
+		void addVelocity(Vector2 a);
+		void addVelocity(float ax, float ay);
+		//增加X轴速度
+		void addVelocityX(float a);
+		//增加Y轴速度
+		void addVelocityY(float a);
+
+		//以当前方向加速
+		void addVelocityAhead(float size);
+		//以指定方向加速
+		void addVelocityAhead(float size, float angle);
 	public:
 
+		//获取画家所在窗口
 		Window* getWindow()const;
 
+		//获取父画家
 		Painter* getParent()const;
 
+		//获取所有子画家
 		std::vector<Painter*> getAllPainter()const;
+		//获取所有已添加模块
+		std::vector<Module*> getAllModule()const;
 
+		//获取坐标
 		Vector2 getPos()const;
-
+		//获取X轴坐标
 		float getPosX()const;
+		//获取Y轴坐标
 		float getPosY()const;
 
-		float getWidth()const;
-		float getHeight()const;
+		//获取实际宽度
+		float getRealWidth()const;
+		//获取实际高度
+		float getRealHeight()const;
 
+		//获取缩放
 		Scale getScale()const;
+		//获取X轴缩放
 		float getScaleX()const;
+		//获取Y轴缩放
 		float getScaleY()const;
 
+		//获取锚点
 		Vector2 getAnchor()const;
 
+		//获取旋转角度
 		float getAngle()const;
 
+		//获取世界坐标
 		Vector2 getWorldPos()const;
 
+		//获取实际坐标
 		Vector2 getRealPos()const;
 
-		Vector2 getTopLeftPos()const;
-		float getTopLeftPosX()const;
-		float getTopLeftPosY()const;
+		//获取左上角坐标
+		Vector2 getUpperleftPos()const;
+		//获取左上角X坐标
+		float getUpperleftPosX()const;
+		//获取左上角Y坐标
+		float getUpperleftPosY()const;
 
-		Vector2 getBottomRightPos()const;
-		float getBottomRightPosX()const;
-		float getBottomRightPosY()const;
+		//获取右下角坐标
+		Vector2 getLowerrightPos()const;
+		//获取右下角X坐标
+		float getLowerrightPosX()const;
+		//获取右下角Y坐标
+		float getLowerrightPosY()const;
 
+		//获取右上角坐标
+		Vector2 getUpperrightPos()const;
+		//获取右上角X坐标
+		float getUpperrightPosX()const;
+		//获取右上角Y坐标
+		float getUpperrightPosY()const;
 
-		Vector2 getTopRightPos()const;
-		float getTopRightPosX()const;
-		float getTopRightPosY()const;
+		//获取左下角坐标
+		Vector2 getLowerleftPos()const;
+		//获取左下角X坐标
+		float getLowerleftPosX()const;
+		//获取左下角Y坐标
+		float getLowerleftPosY()const;
 
-		Vector2 getBottomLeftPos()const;
-		float getBottomLeftPosX()const;
-		float getBottomLeftPosY()const;
+		//获取速度
+		Vector2 getVelocity()const;
+		//获取X轴速度
+		float getVelocityX()const;
+		//获取Y轴速度
+		float getVelocityY()const;
+
+		//获取质量
+		float getMass()const;
+
+		//获取渲染顺序
+		size_t getOrder()const;
 	public:
 
+		//是否与其他画家重叠
 		bool isOverlap(const Painter* other)const;
 
+		//是否启用Tick方法
 		bool isEnableTick()const;
+		//是否启用Render方法
+		bool isEnableRender()const;
+		//是否更新
+		bool isEnableUpdate()const;
 	public:
 
+		//绘制图像
 		void Paint();
 		void Paint(Vector2 pos, float angle);
 		void Paint(Window* window);
 		void Paint(Vector2 pos, float angle, Window* window);
 
+		//每帧调用一次
 		virtual void Tick(float delta) {};
 	public:
 
-		static void setDefaultAnchorPos(Vector2 pos);
-		static void setDefaultAnchorPos(float x, float y);
+		//设置默认锚点
+		static void setDefaultAnchor(Vector2 pos);
+		static void setDefaultAnchor(float x, float y);
 
+		//更新属性
 		static void updateProperty(Window* window);
+
+		//每帧最后更新一次
+		static void updateEnd(Window* window, float delta);
 	protected:
 
+		//渲染
 		virtual void Render() {};
 	private:
 
@@ -353,16 +469,32 @@ namespace helix2d
 		void setWindow(Window* window);
 
 		void updateProperty();
+		void updateEnd(float delta);
+		
+		//模块排序
+		void sortModule();
+		//渲染排序
+		void sortOrder();
 	protected:
 
-		float width;
-		float height;
+		//实际宽度
+		float realWidth;
+		//实际高度
+		float realHeight;
 
 		float angle;
+		float realAngle;
 
 		Scale scale;
 
 		Color color;
+
+		size_t order;
+	protected:
+
+		Vector2 velocity;
+
+		float mass;
 	protected:
 
 		Window* window;
@@ -390,6 +522,12 @@ namespace helix2d
 		Vector2 anchor;
 
 		bool bEnableTick;
+		bool bEnableRender;
+		bool bEnableUpdate;
+
+		bool bSortModule;
+
+		bool bSortOrder;
 	private:
 
 		std::vector<Painter*> painterList;

@@ -1,5 +1,6 @@
 #include "h2dRender.h"
 #include "h2dBase.h"
+#include "h2dModule.h"
 #include "h2dImage.h"
 
 ID2D1Factory* helix2d::Renderer::pD2D1Factory = nullptr;
@@ -128,11 +129,6 @@ bool helix2d::Renderer::createDeviceIndependentResources()
 		);
 	}
 
-	/*if (SUCCEEDED(hr))
-	{
-		pDWTextFormat->SetWordWrapping(DWRITE_WORD_WRAPPING_NO_WRAP);
-	}*/
-
 	if (FAILED(hr))
 	{
 		discardResources();
@@ -145,6 +141,7 @@ bool helix2d::Renderer::createDeviceResources()
 {
 	HRESULT hr = S_OK;
 
+	//需要优化逻辑
 	for (auto& imgPair : Image::imgList)
 	{
 		if (imgPair.second != nullptr &&
@@ -241,12 +238,9 @@ void helix2d::Renderer::_render(float delta)
 		pPainter->_update(delta);
 	}
 
-	Painter::updateProperty(window);
+	Module::updateModule(window, delta);
 
-	for (auto pPainter : window->painterList)
-	{
-		pPainter->_updateModule(delta);
-	}
+	Painter::updateEnd(window, delta);
 
 	for (auto pPainter : window->painterList)
 	{

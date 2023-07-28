@@ -60,6 +60,16 @@ const
 	return Vector2(x * num, y * num);
 }
 
+helix2d::Vector2 helix2d::operator*(float num, const helix2d::Vector2& vec)
+{
+	return vec * num;
+}
+
+helix2d::Vector2 helix2d::Vector2::operator/(float num) const
+{
+	return Vector2(x / num, y / num);
+}
+
 helix2d::Vector2 helix2d::Vector2::operator*=(float num)
 {
 	x *= num;
@@ -67,22 +77,80 @@ helix2d::Vector2 helix2d::Vector2::operator*=(float num)
 	return *this;
 }
 
+helix2d::Vector2 helix2d::Vector2::operator/=(float num)
+{
+	x /= num;
+	y /= num;
+	return *this;
+}
+
+helix2d::Vector2 helix2d::Vector2::operator-()
+{
+	return Vector2(-x, -y);
+}
+
 helix2d::Vector2::operator D2D1_POINT_2F()
 {
 	return D2D1::Point2F(x, y);
 }
 
-float helix2d::Vector2::dot(const Vector2& vec)
+float helix2d::Vector2::dot(const Vector2& vec)const
 {
 	return x * vec.x + y * vec.y;
 }
 
-helix2d::Vector2 helix2d::Vector2::cross(const Vector2& vec)
+helix2d::Vector2 helix2d::Vector2::cross(const Vector2& vec)const
 {
 	return Vector2(
 		x * vec.y - y * vec.x, 
 		y * vec.x - x * vec.y
 	);
+}
+
+helix2d::Vector2 helix2d::Vector2::getLeftNormalLine() const
+{
+	return Vector2(-y, x);
+}
+
+helix2d::Vector2 helix2d::Vector2::getRightNormalLine() const
+{
+	return Vector2(y, -x);
+}
+
+float helix2d::Vector2::getDistance(const Vector2& vec) const
+{
+	return sqrtf(
+		powf((x - vec.x), 2) +
+		powf((y - vec.y), 2)
+	);
+}
+
+float helix2d::Vector2::getModulus() const
+{
+	return sqrtf(
+		x * x +
+		y * y
+	);
+}
+
+helix2d::Vector2 helix2d::Vector2::getUnit() const
+{
+	return (*this) / getModulus();
+}
+
+float helix2d::Vector2::getDistance(const Vector2& vec1, const Vector2& vec2)
+{
+	return vec1.getDistance(vec2);
+}
+
+float helix2d::Vector2::dot(const Vector2& vec1, const Vector2& vec2)
+{
+	return vec1.dot(vec2);
+}
+
+helix2d::Vector2 helix2d::Vector2::cross(const Vector2& vec1, const Vector2& vec2)
+{
+	return vec1.cross(vec2);
 }
 
 bool helix2d::Input::isDown(Window* window, const KeyCode& key, float downTime)
@@ -163,9 +231,7 @@ bool helix2d::Input::isUpPress(Window* window, const KeyCode& key, float downTim
 
 	auto ct = clock() / 1000.0f;
 
-	auto i = window->upPressKey.end();
-
-	if (it != i && ct - window->downKeyTime[key] >= downTime)
+	if (it != window->upPressKey.end() && ct - window->downKeyTime[key] >= downTime)
 	{
 		return true;
 	}

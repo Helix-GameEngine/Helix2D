@@ -7,7 +7,7 @@ Helix2D是一个基于Direct2D的Windows图形库，该图形库注重于给予�
 
 下面是一个基础的Helix2D程序：
 
-该程序会创建一个名为`Helix2D`的窗口，大小为600*600
+该程序会创建一个名为`Helix2D`的窗口，大小为600x600
 ```C++
 using namespace helix2d;
 
@@ -17,7 +17,7 @@ int main()
     
     while (true)
     {
-
+        Sleep(16);
     }
     return 0;
 }
@@ -29,7 +29,7 @@ int main()
 
 下面是一个多窗口Helix2D程序：
 
-该程序会创建两个分别名为`Window 1`和`Window 2`的窗口，大小分别为1000*1000，500*500
+该程序会创建两个分别名为`Window 1`和`Window 2`的窗口，大小分别为1000x1000，500x500
 ```C++
 using namespace helix2d;
 
@@ -40,7 +40,7 @@ int main()
 
     while (true)
     {
-
+        Sleep(16);
     }
     return 0;
 }
@@ -48,8 +48,10 @@ int main()
 
 #### 还有更多
 
-关于Helix2D的更多教程今后我会自己搭建一个网站，并提供以lib文件的形式下载安装，大家还请期待
+关于Helix2D的网站已经搭建完毕~ 并提供以静态链接库(lib)的方式下载安装
+**网站**：https://friespeter.github.io/helix2d.web/
 
-目前Helix2D还只具备一些基础的小程序开发，但将来会根据用户的建议以及我自身的想法去更新，我也只是个新手，所以还请各位大佬多多关照！
+B站(Bilibili)上有关于Helix2D的教程，
+**个人空间**：https://space.bilibili.com/1755374307
 
 **QQ交流群**：693409874

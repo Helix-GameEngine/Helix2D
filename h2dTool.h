@@ -6,6 +6,9 @@ namespace helix2d
 	enum class KeyCode;
 	enum class MouseCode;
 
+	class Window;
+
+	//二维向量
 	class Vector2
 	{
 	public:
@@ -28,25 +31,60 @@ namespace helix2d
 		Vector2 operator-=(const Vector2& vec);
 
 		Vector2 operator*(float num)const;
+		friend Vector2 operator*(float num, const Vector2& vec);
+		Vector2 operator/(float num)const;
 
 		Vector2 operator*=(float num);
+		Vector2 operator/=(float num);
+
+		Vector2 operator-();
 
 		operator D2D1_POINT_2F();
 	public:
 
-		float dot(const Vector2& vec);
+		//点乘
+		float dot(const Vector2& vec)const;
 
-		Vector2 cross(const Vector2& vec);
+		//叉乘
+		Vector2 cross(const Vector2& vec)const;
+	public:
+
+		//获取左法线
+		Vector2 getLeftNormalLine()const;
+		//获取右法线
+		Vector2 getRightNormalLine()const;
+
+		//获取两向量之间距离
+		float getDistance(const Vector2& vec)const;
+
+		//获取向量的模（长度）
+		float getModulus()const;
+
+		//获取单位向量
+		Vector2 getUnit()const;
+	public:
+
+		//获取两向量之间距离
+		static float getDistance(const Vector2& vec1, const Vector2& vec2);
+
+		//点乘
+		static float dot(const Vector2& vec1, const Vector2& vec2);
+
+		//叉乘
+		static Vector2 cross(const Vector2& vec1, const Vector2& vec2);
 	public:
 
 		float x;
 		float y;
 	};
 
+	//缩放
 	using Scale = Vector2;
 
+	//3x2矩阵
 	using Matrix3x2 = D2D1::Matrix3x2F;
 
+	//输入
 	class Input
 	{
 	public:
@@ -64,6 +102,7 @@ namespace helix2d
 		static bool isDownPress(Window* window, const MouseCode& key);
 	};
 
+	//鼠标键码
 	enum class MouseCode
 	{
 		Left,
@@ -71,6 +110,7 @@ namespace helix2d
 		Right
 	};
 
+	//键盘键码
 	enum class KeyCode
 	{
 		Unknown = 0,

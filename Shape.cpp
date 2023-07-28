@@ -3,20 +3,46 @@
 
 helix2d::Circle::Circle()
 {
-	width = 50.0f;
-	height = 50.0f;
+	realWidth = 50.0f;
+	realHeight = 50.0f;
 }
 
 helix2d::Circle::Circle(float radiusX, float radiusY)
 {
-	width = radiusX * 2;
-	height = radiusY * 2;
+	realWidth = radiusX * 2;
+	realHeight = radiusY * 2;
 }
 
 helix2d::Circle::Circle(float radius)
 {
-	width = radius * 2;
-	height = radius * 2;
+	realWidth = radius * 2;
+	realHeight = radius * 2;
+}
+
+void helix2d::Circle::setRadius(float radiusX, float radiusY)
+{
+	realWidth = radiusX * 2;
+	realHeight = radiusY * 2;
+}
+
+void helix2d::Circle::setRadiusX(float radiusX)
+{
+	realWidth = radiusX * 2;
+}
+
+void helix2d::Circle::setRadiusY(float radiusY)
+{
+	realWidth = radiusY * 2;
+}
+
+float helix2d::Circle::getRadiusX() const
+{
+	return realWidth / 2;
+}
+
+float helix2d::Circle::getRadiusY() const
+{
+	return realHeight / 2;
 }
 
 void helix2d::Circle::Render()
@@ -24,39 +50,47 @@ void helix2d::Circle::Render()
 	auto pTarget = window->getRenderer()->pD2D1RenderTarget;
 	auto pBrush = window->getRenderer()->pD2D1SolidBrush;
 	
-	auto ellipse = D2D1::Ellipse(getTopLeftPos(), width / 2, height / 2);
-
-	pBrush->SetColor(color);
+	auto ellipse = D2D1::Ellipse(getWorldPos(), realWidth / 2, realHeight / 2);
 
 	pTarget->FillEllipse(ellipse, pBrush);
 }
 
 helix2d::Rect::Rect()
 {
-	width = 50.0f;
-	height = 50.0f;
+	realWidth = 50.0f;
+	realHeight = 50.0f;
 }
 
 helix2d::Rect::Rect(float width, float height)
 {
-	this->width = width;
-	this->height = height;
+	this->realWidth = width;
+	this->realHeight = height;
 }
 
 helix2d::Rect::Rect(float side)
 {
-	this->width = side;
-	this->height = side;
+	this->realWidth = side;
+	this->realHeight = side;
 }
 
 void helix2d::Rect::setWidth(float width)
 {
-	this->width = width;
+	this->realWidth = width;
 }
 
 void helix2d::Rect::setHeight(float height)
 {
-	this->height = height;
+	this->realHeight = height;
+}
+
+float helix2d::Rect::getWidth()const
+{
+	return realWidth;
+}
+
+float helix2d::Rect::getHeight()const
+{
+	return realHeight;
 }
 
 void helix2d::Rect::Render()
@@ -64,11 +98,11 @@ void helix2d::Rect::Render()
 	auto pTarget = window->getRenderer()->pD2D1RenderTarget;
 	auto pBrush = window->getRenderer()->pD2D1SolidBrush;
 
-	auto a = getTopLeftPos();
+	auto a = getUpperleftPos();
 
 	auto rect = D2D1::Rect(
-		getTopLeftPosX(), getTopLeftPosY(),
-		getBottomRightPosX(), getBottomRightPosY()
+		getUpperleftPosX(), getUpperleftPosY(),
+		getLowerrightPosX(), getLowerrightPosY()
 	);
 
 	pBrush->SetColor(color);

@@ -8,13 +8,11 @@ std::map<helix2d::Image*, std::pair<ID2D1Bitmap*, bool>>
 
 helix2d::Image::Image()
 {
-	pWICimage = nullptr;
 	pConverter = nullptr;
 }
 
 helix2d::Image::~Image()
 {
-	SafeRelease(pWICimage);
 	SafeRelease(pConverter);
 }
 
@@ -23,7 +21,7 @@ std::wstring helix2d::Image::getPath() const
 	return imgPath;
 }
 
-bool helix2d::Image::Load(std::wstring path)
+bool helix2d::Image::load(std::wstring path)
 {
 	if (imgList[path] != nullptr)
 	{
@@ -33,65 +31,59 @@ bool helix2d::Image::Load(std::wstring path)
 	std::fstream imgfile{path};
 	if (imgfile.is_open())
 	{
-		imgList[path] = new Image;
+		imgfile.close();
+		
+		auto pImage = new Image;
+		imgList[path] = pImage;
 
-		if (QueueMessage::mtx_msgPeek.try_lock())
+		IWICBitmapDecoder* pDecoder = nullptr;
+		IWICBitmapFrameDecode* pWICimage = nullptr;
+
+		auto hr = Renderer::pWICFactory->CreateDecoderFromFilename(
+			path.c_str(),
+			NULL,
+			GENERIC_READ,
+			WICDecodeMetadataCacheOnDemand,
+			&pDecoder
+		);
+
+		if (SUCCEEDED(hr))
 		{
-			QueueMessage::msgPeek.push_back(
-				[&, path]() {
-					auto pImage = imgList[path];
-
-					IWICBitmapDecoder* pDecoder = nullptr;
-					IWICBitmapFrameDecode* pWICimage = nullptr;
-
-					auto hr = Renderer::pWICFactory->CreateDecoderFromFilename(
-						path.c_str(),
-						NULL,
-						GENERIC_READ,
-						WICDecodeMetadataCacheOnDemand,
-						&pDecoder);
-
-					if (SUCCEEDED(hr))
-					{
-						hr = pDecoder->GetFrame(0, &pWICimage);
-					}
-
-					if (SUCCEEDED(hr))
-					{
-						hr = Renderer::pWICFactory->CreateFormatConverter(
-							&pImage->pConverter);
-					}
-
-
-					if (SUCCEEDED(hr))
-					{
-						//Initialize Converter
-						hr = pImage->pConverter->Initialize(
-							pWICimage,
-							GUID_WICPixelFormat32bppPBGRA,
-							WICBitmapDitherTypeNone,
-							NULL,
-							0.f,
-							WICBitmapPaletteTypeCustom
-						);
-					}
-
-					if (SUCCEEDED(hr))
-					{
-						imgList[path] = pImage;
-					}
-					else
-					{
-						delete pImage;
-						pImage = nullptr;
-					}
-
-					SafeRelease(pDecoder);
-					SafeRelease(pWICimage);
-				}
-			);
-			QueueMessage::mtx_msgPeek.unlock();
+			hr = pDecoder->GetFrame(0, &pWICimage);
 		}
+
+		if (SUCCEEDED(hr))
+		{
+			hr = Renderer::pWICFactory->CreateFormatConverter(
+				&pImage->pConverter);
+		}
+
+
+		if (SUCCEEDED(hr))
+		{
+			//Initialize Converter
+			hr = pImage->pConverter->Initialize(
+				pWICimage,
+				GUID_WICPixelFormat32bppPBGRA,
+				WICBitmapDitherTypeNone,
+				NULL,
+				0.f,
+				WICBitmapPaletteTypeCustom
+			);
+		}
+
+		if (SUCCEEDED(hr))
+		{
+			imgList[path] = pImage;
+		}
+		else
+		{
+			delete pImage;
+			pImage = nullptr;
+		}
+
+		SafeRelease(pDecoder);
+		SafeRelease(pWICimage);
 
 		return true;
 	}
@@ -105,10 +97,12 @@ void helix2d::Image::uninit()
 		prprBitmap.second.second = false;
 		SafeRelease(prprBitmap.second.first);
 	}
+	D2DimgList.clear();
 
 	for (auto& prImage : imgList)
 	{
 		delete prImage.second;
+		prImage.second = nullptr;
 	}
-	imgList.erase(imgList.begin(), imgList.end());
+	imgList.clear();
 }

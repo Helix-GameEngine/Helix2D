@@ -6,10 +6,21 @@
 namespace helix2d
 {
 	class Painter;
+	class Window;
 
+	//模块
 	class Module
 	{
 		friend class Painter;
+	public:
+
+		enum class Type
+		{
+			//修改模块
+			Modifier,
+			//检查模块
+			Detector
+		};
 	public:
 
 		Module();
@@ -17,59 +28,60 @@ namespace helix2d
 		~Module();
 	public:
 
+		//获取父画家
 		Painter* getParent()const;
+
+		//获取模块类型
+		Module::Type getModuleType()const;
 	public:
 
+		//更新模块
+		static void updateModule(Window* window, float delta);
+	public:
+
+		//获取所有模块
 		static std::vector<Module*> getAllModule();
 	protected:
 
+		//更新
 		virtual void update(float delta) {};
-	protected:
+	private:
 
-		Vector2 getTopLeftPos(const Painter* painter)const;
+		//更新特定类型模块
+		static void updateTypeModule(Window* window, float delta, Type type);
 	protected:
 
 		Painter* parent;
+	protected:
+
+		Type modType;
 	private:
 
 		static std::vector<Module*> allMod;
 	};
 
+	//重力
 	class Gravity :
 		public Module
 	{
 	public:
 
-		Gravity(float g = 0.1f);
+		explicit Gravity(float g = 1.0f);
+	public:
+
+		//设置重力系数
+		void setGravity(float g);
+	public:
+
+		//获取重力系数
+		float getGravity()const;
 	private:
 
 		void update(float delta) override;
 	private:
 		
-		float speedY;
+		float v;
 
 		float gravity;
-	};
-
-	class Collision :
-		public Module
-	{
-	public:
-
-		Collision();
-	public:
-
-		void enableCollision(bool b);
-	private:
-
-		void update(float delta) override;
-	private:
-
-		void repulsion(Painter* painter);
-	private:
-
-		bool bEnableCollision;
-
-		Vector2 lastTopLeftPos;
 	};
 }

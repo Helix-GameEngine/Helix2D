@@ -55,6 +55,11 @@ std::wstring helix2d::Text::getText() const
 	return text;
 }
 
+helix2d::Font helix2d::Text::getFont() const
+{
+	return font;
+}
+
 void helix2d::Text::Render()
 {
 	if (text.empty())
@@ -75,15 +80,15 @@ void helix2d::Text::Render()
 	DWRITE_TEXT_METRICS TextMetrics{};
 	textLayout->GetMetrics(&TextMetrics);
 
-	width = TextMetrics.width;
-	height = TextMetrics.height;
+	realWidth = TextMetrics.width;
+	realHeight = TextMetrics.height;
 
 	auto& pTarget = window->getRenderer()->pD2D1RenderTarget;
 	auto& pBrush = window->getRenderer()->pD2D1SolidBrush;
 
 	auto rect = D2D1::RectF(
-		getTopLeftPosX(), getTopLeftPosY(),
-		getBottomRightPosX(),getBottomRightPosY());
+		getUpperleftPosX(), getUpperleftPosY(),
+		getLowerrightPosX(),getLowerrightPosY());
 
 	pTarget->DrawTextW(
 		text.c_str(),
@@ -127,8 +132,8 @@ void helix2d::Text::recreateSources()
 		DWRITE_TEXT_METRICS TextMetrics{};
 		textLayout->GetMetrics(&TextMetrics);
 
-		width = TextMetrics.width;
-		height = TextMetrics.height;
+		realWidth = TextMetrics.width;
+		realHeight = TextMetrics.height;
 	}
 
 	if (FAILED(hr))

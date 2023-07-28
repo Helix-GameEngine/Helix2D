@@ -7,13 +7,19 @@ std::vector<helix2d::Module*> helix2d::Module::allMod;
 helix2d::Module::Module()
 {
 	parent = nullptr;
+	modType = Type::Modifier;
 
 	allMod.push_back(this);
 }
 
 helix2d::Module::~Module()
 {
-	allMod.erase(std::find(allMod.begin(), allMod.end(), this));
+	auto it = std::find(allMod.begin(), allMod.end(), this);
+
+	if (it != allMod.end())
+	{
+		allMod.erase(it);
+	}
 }
 
 helix2d::Painter* helix2d::Module::getParent() const
@@ -21,75 +27,65 @@ helix2d::Painter* helix2d::Module::getParent() const
 	return parent;
 }
 
+helix2d::Module::Type helix2d::Module::getModuleType()const
+{
+	return modType;
+}
+
+void helix2d::Module::updateModule(Window* window, float delta)
+{
+	updateTypeModule(window, delta, Type::Modifier);
+	updateTypeModule(window, delta, Type::Detector);
+}
+
 std::vector<helix2d::Module*> helix2d::Module::getAllModule()
 {
 	return allMod;
 }
 
-helix2d::Vector2 helix2d::Module::getTopLeftPos(const Painter* painter) const
+void helix2d::Module::updateTypeModule(Window* window, float delta, Type type)
 {
-	return painter->getTopLeftPos();
-}
-
-helix2d::Gravity::Gravity(float g)
-{
-	speedY = 0.0f;
-	gravity = g;
-}
-
-void helix2d::Gravity::update(float delta)
-{
-	helix2d::Vector2&& pos = parent->getPos();
-	speedY += gravity;
-	if (speedY > 9.8f)
+	for (auto& mod : allMod)
 	{
-		speedY = 9.8f;
-	}
-	pos.y += speedY;
-
-	parent->setPos(pos);
-}
-
-helix2d::Collision::Collision()
-{
-	bEnableCollision = true;
-}
-
-void helix2d::Collision::enableCollision(bool b)
-{
-	bEnableCollision = b;
-}
-
-void helix2d::Collision::update(float delta)
-{
-	if (!bEnableCollision)
-	{
-		return;
-	}
-
-	if (parent->getWindow() == nullptr)
-	{
-		return;
-	}
-
-	
-	lastTopLeftPos = getTopLeftPos(parent);
-
-	for (auto& mod : getAllModule())
-	{
-		if (mod->getParent() == parent)
+		if (mod->parent == nullptr)
 		{
 			continue;
 		}
 
-		if (mod->getParent()->getWindow() == parent->getWindow())
+		if (mod->parent->getWindow() != window)
 		{
-			repulsion(mod->getParent());
+			continue;
+		}
+
+		if (!mod->parent->isEnableUpdate())
+		{
+			continue;
+		}
+
+		if (mod->modType == type)
+		{
+			mod->update(delta);
 		}
 	}
 }
 
-void helix2d::Collision::repulsion(Painter* painter)
+helix2d::Gravity::Gravity(float g)
 {
-	
+	v = 0.0f;
+	gravity = g;
+}
+
+void helix2d::Gravity::setGravity(float g)
+{
+	gravity = g;
+}
+
+float helix2d::Gravity::getGravity() const
+{
+	return gravity;
+}
+
+void helix2d::Gravity::update(float delta)
+{
+	parent->addVelocity(0.0f, gravity * delta * 50.0f * 9.8f);
 }

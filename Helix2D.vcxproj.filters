@@ -78,9 +78,6 @@
     <ClCompile Include="Text.cpp">
       <Filter>头文件\source\Render\Text</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>头文件\source\Render\Camera</Filter>
     </ClCompile>

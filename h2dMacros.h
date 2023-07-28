@@ -11,19 +11,14 @@
 
 #pragma comment(lib, "windowscodecs.lib")
 
-namespace helix2d
-{
-	class Window;
-	class Base;
+#ifndef H2D_LIBHELIX2D
+#define H2D_LIBHELIX2D
+//#pragma comment(lib,"libhelix2d")
+#endif // !H2D_LIBHELIX2D
 
-	class Renderer;
-	class Painter;
-	class Color;
 
-	class Circle;
+#include <vector>
 
-	class Module;
-}
 
 template <typename resource>
 static void SafeRelease(resource*& p)
@@ -35,7 +30,17 @@ static void SafeRelease(resource*& p)
 	}
 }
 
-#ifndef HINST_THISCOMPONENT
+template <typename T>
+static void SafeRemove(std::vector<T>& container, T& item)
+{
+	auto it = std::find(container.begin(), container.end(), item);
+	if (it != container.end())
+	{
+		container.erase(it);
+	}
+}
+
 EXTERN_C IMAGE_DOS_HEADER __ImageBase;
+#ifndef HINST_THISCOMPONENT
 #	define HINST_THISCOMPONENT ((HINSTANCE)&__ImageBase)
 #endif

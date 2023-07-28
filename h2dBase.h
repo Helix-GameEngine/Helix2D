@@ -14,6 +14,7 @@ namespace helix2d
 	class Window;
 	class Camera;
 	
+	//窗口
 	class Window
 	{
 		friend class Renderer;
@@ -33,40 +34,55 @@ namespace helix2d
 		~Window();
 	public:
 
+		//添加画家
 		void addPainter(Painter* pPainter);	
 	public:
 
+		//设置窗口背景颜色
 		void setBackgroundColor(const Color& c);
 
+		//设置期望帧率
 		void setFPS(unsigned int fps);
 
+		//设置摄像机（已添加的摄像机）
 		void setCamera(Camera* camera);
 
+		//设置是否全屏
 		void setFullScreen(bool fullScreen);
 	public:
 
+		//获取宽度
 		unsigned int getWidth()const;
+		//获取高度
 		unsigned int getHeight()const;
 
+		//获取窗口句柄
 		HWND getHWND()const;
 
+		//获取渲染器
 		Renderer* getRenderer()const;
 
+		//获取所有已添加画家
 		std::vector<Painter*> getAllPainter()const;
 
+		//获取摄像机
 		Camera* getCamera()const;
 	public:
 
 		static void uninit();
 	private:
 
+		//创建窗口
 		void create();
 
+		//更新窗口
 		void update(float delta);
 
+		//清除输入
 		void clearInput();
 	private:
 
+		//查找窗口
 		static Window* findWindow(HWND hWnd);
 	private:
 
@@ -88,10 +104,6 @@ namespace helix2d
 		unsigned int fps;
 
 		bool bWindowDone;
-
-		bool bIsDragging;
-
-		float lastUpdateTime;
 	private:
 
 		Renderer* renderer;

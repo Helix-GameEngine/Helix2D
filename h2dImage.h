@@ -7,7 +7,9 @@
 namespace helix2d
 {
 	class Sprite;
+	class Renderer;
 
+	//图片
 	class Image
 	{
 		friend class Sprite;
@@ -22,15 +24,13 @@ namespace helix2d
 		std::wstring getPath()const;
 	public:
 
-		static bool Load(std::wstring path);
+		static bool load(std::wstring path);
 	public:
 
 		static void uninit();
 	private:
 
 		std::wstring imgPath;
-
-		IWICBitmapFrameDecode* pWICimage;
 
 		IWICFormatConverter* pConverter;
 	private:
@@ -41,12 +41,16 @@ namespace helix2d
 			D2DimgList;
 	};
 
+	//缩放模式
 	enum class ScaleMode
 	{
+		//邻近缩放
 		Neighbor = D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR,
+		//线性缩放
 		Linear = D2D1_BITMAP_INTERPOLATION_MODE_LINEAR
 	};
 
+	//精灵
 	class Sprite :
 		public Painter
 	{
@@ -57,9 +61,11 @@ namespace helix2d
 		explicit Sprite(const std::wstring& path);
 	public:
 
+		//打开图片
 		void open(const std::wstring& path);
 	public:
 
+		//设置缩放模式
 		void setScaleMode(const ScaleMode& scaleMode);
 	private:
 

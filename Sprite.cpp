@@ -20,7 +20,7 @@ helix2d::Sprite::Sprite(const std::wstring& path)
 
 void helix2d::Sprite::open(const std::wstring& path)
 {
-	Image::Load(path);
+	Image::load(path);
 
 	imgPath = path;
 }
@@ -53,18 +53,18 @@ void helix2d::Sprite::Render()
 	auto pTarget = window->getRenderer()->pD2D1RenderTarget;
 	auto pBrush = window->getRenderer()->pD2D1SolidBrush;
 
-	auto top = getTopLeftPos();
+	auto top = getUpperleftPos();
 
 	auto size = pD2DImg->GetSize();
 
-	width = size.width;
-	height = size.height;
+	realWidth = size.width;
+	realHeight = size.height;
 
 	auto rect = D2D1::RectF(
 		top.x,
 		top.y,
-		top.x + width,
-		top.y + height
+		top.x + realWidth,
+		top.y + realHeight
 	);
 
 	pTarget->DrawBitmap(
