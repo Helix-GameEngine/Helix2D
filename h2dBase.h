@@ -36,6 +36,9 @@ namespace helix2d
 
 		//添加画家
 		void addPainter(Painter* pPainter);	
+
+		//移除画家
+		bool removePainter(Painter* pPainter);
 	public:
 
 		//设置窗口背景颜色

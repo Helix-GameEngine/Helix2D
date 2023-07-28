@@ -249,6 +249,12 @@ namespace helix2d
 
 		//添加模块
 		void addModule(Module* pMod);
+
+		//移除子画家
+		bool removePainter(Painter* pPainter);
+
+		//移除模块
+		bool removeModule(Module* pMod);
 	public:
 
 		//设置坐标

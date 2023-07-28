@@ -31,13 +31,15 @@ static void SafeRelease(resource*& p)
 }
 
 template <typename T>
-static void SafeRemove(std::vector<T>& container, T& item)
+static bool SafeRemove(std::vector<T>& container, T& item)
 {
 	auto it = std::find(container.begin(), container.end(), item);
 	if (it != container.end())
 	{
 		container.erase(it);
+		return true;
 	}
+	return false;
 }
 
 EXTERN_C IMAGE_DOS_HEADER __ImageBase;

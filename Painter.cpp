@@ -63,6 +63,27 @@ void helix2d::Painter::addModule(Module* pMod)
 	bSortModule = true;
 }
 
+bool helix2d::Painter::removePainter(Painter* pPainter)
+{
+	if (SafeRemove(painterList, pPainter))
+	{
+		pPainter->parent = nullptr;
+		pPainter->setWindow(nullptr);
+		return true;
+	}
+	return false;
+}
+
+bool helix2d::Painter::removeModule(Module* pMod)
+{
+	if (SafeRemove(modList, pMod))
+	{
+		pMod->parent = nullptr;
+		return true;
+	}
+	return false;
+}
+
 void helix2d::Painter::rotate(float angle)
 {
 	this->angle += angle;

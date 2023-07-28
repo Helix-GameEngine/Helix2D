@@ -114,6 +114,17 @@ void helix2d::Window::addPainter(Painter* pPainter)
 	}
 }
 
+bool helix2d::Window::removePainter(Painter* pPainter)
+{
+	if (SafeRemove(painterList, pPainter))
+	{
+		pPainter->parent = nullptr;
+		pPainter->setWindow(nullptr);
+		return true;
+	}
+	return false;
+}
+
 void helix2d::Window::setBackgroundColor(const Color& c)
 {
 	backgroundColor = c;
