@@ -129,7 +129,10 @@ void helix2d::Painter::addVelocityAhead(float size)
 
 void helix2d::Painter::addVelocityAhead(float size, float angle)
 {
-	Vector2 v{ cosf(angle),sinf(angle) };
+	Vector2 v{
+		cosf((angle - 90) * 3.1415f / 180.0f),
+		sinf((angle - 90) * 3.1415f / 180.0f)
+	};
 	v *= size;
 	addVelocity(v);
 }
@@ -291,7 +294,10 @@ void helix2d::Painter::moveAhead(float size)
 
 void helix2d::Painter::moveAhead(float size, float angle)
 {
-	Vector2 v{ cosf(angle),sinf(angle) };
+	Vector2 v{
+		cosf((angle - 90) * 3.1415f / 180.0f),
+		sinf((angle - 90) * 3.1415f / 180.0f)
+	};
 	v *= size;
 	movePos(v);
 }
