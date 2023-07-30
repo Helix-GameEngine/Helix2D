@@ -13,7 +13,7 @@
 
 #ifndef H2D_LIBHELIX2D
 #define H2D_LIBHELIX2D
-//#pragma comment(lib,"libhelix2d")
+#pragma comment(lib,"libhelix2d")
 #endif // !H2D_LIBHELIX2D
 
 
