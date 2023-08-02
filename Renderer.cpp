@@ -222,8 +222,6 @@ void helix2d::Renderer::discardResources()
 
 void helix2d::Renderer::_render(float delta)
 {
-	//auto hr = createDeviceResources();
-
 	if (pD2D1RenderTarget == nullptr)
 	{
 		return;
@@ -233,19 +231,13 @@ void helix2d::Renderer::_render(float delta)
 	pD2D1RenderTarget->BeginDraw();
 	pD2D1RenderTarget->Clear(window->backgroundColor);
 
-	for (auto pPainter : window->painterList)
-	{
-		pPainter->_update(delta);
-	}
+	Painter::updateTick(window, delta);
 
 	Module::updateModule(window, delta);
 
 	Painter::updateEnd(window, delta);
 
-	for (auto pPainter : window->painterList)
-	{
-		pPainter->Paint();
-	}
+	Painter::updateRender(window);
 
 	pD2D1RenderTarget->EndDraw();
 }

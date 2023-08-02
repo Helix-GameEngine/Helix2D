@@ -130,8 +130,8 @@ void helix2d::Painter::addVelocityAhead(float size)
 void helix2d::Painter::addVelocityAhead(float size, float angle)
 {
 	Vector2 v{
-		cosf((angle - 90) * 3.1415f / 180.0f),
-		sinf((angle - 90) * 3.1415f / 180.0f)
+		cosf(Math::getRadian(angle - 90)),
+		sinf(Math::getRadian(angle - 90))
 	};
 	v *= size;
 	addVelocity(v);
@@ -295,8 +295,8 @@ void helix2d::Painter::moveAhead(float size)
 void helix2d::Painter::moveAhead(float size, float angle)
 {
 	Vector2 v{
-		cosf((angle - 90) * 3.1415f / 180.0f),
-		sinf((angle - 90) * 3.1415f / 180.0f)
+		cosf(Math::getRadian(angle - 90)),
+		sinf(Math::getRadian(angle - 90))
 	};
 	v *= size;
 	movePos(v);
@@ -447,6 +447,28 @@ void helix2d::Painter::updateProperty(Window* window)
 		for (auto& painter : window->getAllPainter())
 		{
 			painter->updateProperty();
+		}
+	}
+}
+
+void helix2d::Painter::updateTick(Window* window, float delta)
+{
+	if (window)
+	{
+		for (size_t i = 0; i < window->getAllPainter().size(); i++)
+		{
+			window->getAllPainter()[i]->_update(delta);
+		}
+	}
+}
+
+void helix2d::Painter::updateRender(Window* window)
+{
+	if (window)
+	{
+		for (size_t i = 0; i < window->getAllPainter().size(); i++)
+		{
+			window->getAllPainter()[i]->Paint();
 		}
 	}
 }
@@ -723,6 +745,11 @@ void helix2d::Painter::updateEnd(float delta)
 
 void helix2d::Painter::sortModule()
 {
+	if (modList.empty())
+	{
+		return;
+	}
+
 	if (bSortModule)
 	{
 		std::sort(
@@ -738,6 +765,11 @@ void helix2d::Painter::sortModule()
 
 void helix2d::Painter::sortOrder()
 {
+	if (painterList.empty())
+	{
+		return;
+	}
+
 	if (bSortOrder)
 	{
 		std::sort(

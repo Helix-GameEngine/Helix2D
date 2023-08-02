@@ -45,8 +45,9 @@ std::vector<helix2d::Module*> helix2d::Module::getAllModule()
 
 void helix2d::Module::updateTypeModule(Window* window, float delta, Type type)
 {
-	for (auto& mod : allMod)
+	for (size_t i = 0; i < Module::allMod.size(); i++)
 	{
+		auto* mod = allMod[i];
 		if (mod->parent == nullptr)
 		{
 			continue;
@@ -71,7 +72,6 @@ void helix2d::Module::updateTypeModule(Window* window, float delta, Type type)
 
 helix2d::Gravity::Gravity(float g)
 {
-	v = 0.0f;
 	gravity = g;
 }
 

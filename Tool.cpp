@@ -284,3 +284,127 @@ bool helix2d::Input::isDownPress(Window* window, const MouseCode& key)
 	}
 	return false;
 }
+
+void helix2d::Input::addKeyCode(Window* window, const KeyCode& key)
+{
+	auto it = std::find(
+		window->downKey.begin(),
+		window->downKey.end(),
+		key
+	);
+
+	//判断之前是否是松开的
+	if (it == window->downKey.end())
+	{
+		window->downKey.push_back(key);
+		window->downPressKey.push_back(key);
+		window->downKeyTime[key] =
+			clock() / 1000.f;
+	}
+}
+
+void helix2d::Input::removeKeyCode(Window* window, const KeyCode& key)
+{
+	auto it = std::find(
+		window->downKey.begin(),
+		window->downKey.end(),
+		key
+	);
+
+	//判断之前是否是按下的
+	if (it != window->downKey.end())
+	{
+		window->downKey.erase(it);
+		window->upPressKey.push_back(key);
+
+		//不修改时间，以备使用
+	}
+	else
+	{
+		window->downKeyTime[key] = -1.f;
+	}
+}
+
+void helix2d::Input::addMouseCode(Window* window, const MouseCode& key)
+{
+	auto it = std::find(
+		window->downMouse.begin(),
+		window->downMouse.end(),
+		key
+	);
+
+	if (it == window->downMouse.end())
+	{
+		window->downMouse.push_back(key);
+		window->downPressMouse.push_back(key);
+		window->downMouseTime[key] = clock() / 1000.f;
+	}
+}
+
+void helix2d::Input::removeMouseCode(Window* window, const MouseCode& key)
+{
+	auto it = std::find(
+		window->downMouse.begin(),
+		window->downMouse.end(),
+		key
+	);
+
+	if (it != window->downMouse.end())
+	{
+		window->downMouse.erase(it);
+		window->upPressMouse.push_back(key);
+	}
+	else
+	{
+		window->downMouseTime[key] = -1.f;
+	}
+}
+
+helix2d::KeyCode helix2d::Input::getLRKeyCode(const KeyCode& key, LPARAM lparam)
+{
+	if ((lparam & 0x01000000) == 0)
+	{
+		//左键
+		switch (key)
+		{
+		case KeyCode::Ctrl:
+			return KeyCode::LCtrl;
+		case KeyCode::Alt:
+			return KeyCode::LAlt;
+		case KeyCode::Shift:
+			return KeyCode::LShift;
+		default:
+			break;
+		}
+	}
+	else
+	{
+		//右键
+		switch (key)
+		{
+		case KeyCode::Ctrl:
+			return KeyCode::RCtrl;
+		case KeyCode::Alt:
+			return KeyCode::RAlt;
+		case KeyCode::Shift:
+			return KeyCode::RShift;
+		default:
+			break;
+		}
+	}
+
+	return key;
+}
+
+const float helix2d::Math::Pi = 3.1415926f;
+const float helix2d::Math::e = 2.718281828f;
+
+float helix2d::Math::getRadian(float angle)
+{
+	return (angle * Math::Pi / 180.0f);
+}
+
+float helix2d::Math::getAngle(float radian)
+{
+	return (radian * 180.0f / Math::Pi);
+}

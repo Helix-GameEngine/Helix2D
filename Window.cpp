@@ -228,8 +228,8 @@ void helix2d::Window::create()
 		HWND hwParent{ 0 };
 		if (this->parent == nullptr)
 		{
-			WCHAR className[21] = { 0 };
-			swprintf_s(className, L"%zd", ++ordinal);		//分配类名标识
+			WCHAR className[28] = { 0 };
+			swprintf_s(className, L"Helix2D %zd", ++ordinal);		//分配类名标识
 			this->wc.lpszClassName = className;
 			RegisterClassExW(&this->wc);
 		}
@@ -397,44 +397,17 @@ LRESULT CALLBACK helix2d::Window::WndProc(HWND hWnd, UINT msg, WPARAM wparam, LP
 	case WM_KEYDOWN:
 	case WM_SYSKEYDOWN:
 	{
-		auto it = std::find(
-			window->downKey.begin(),
-			window->downKey.end(),
-			static_cast<KeyCode>(wparam)
-		);
-
-		//判断之前是否是松开的
-		if (it == window->downKey.end())
-		{
-			window->downKey.push_back(static_cast<KeyCode>(wparam));
-			window->downPressKey.push_back(static_cast<KeyCode>(wparam));
-			window->downKeyTime[static_cast<KeyCode>(wparam)] = 
-				clock() / 1000.f;
-		}
+		auto key = static_cast<KeyCode>(wparam);
+		Input::addKeyCode(window, key);
+		Input::addKeyCode(window, Input::getLRKeyCode(key, lparam));
 		break;
 	}
 	case WM_KEYUP:
 	case WM_SYSKEYUP:
 	{
-		auto it = std::find(
-			window->downKey.begin(),
-			window->downKey.end(),
-			static_cast<KeyCode>(wparam)
-		);
-
-		//判断之前是否是按下的
-		if (it != window->downKey.end())
-		{
-			window->downKey.erase(it);
-			window->upPressKey.push_back(static_cast<KeyCode>(wparam));
-
-			//不修改时间，以备使用
-		}
-		else
-		{
-			window->downKeyTime[static_cast<KeyCode>(wparam)] = -1.f;
-		}
-		
+		auto key = static_cast<KeyCode>(wparam);
+		Input::removeKeyCode(window, key);
+		Input::removeKeyCode(window, Input::getLRKeyCode(key, lparam));
 		break;
 	}
 	case WM_LBUTTONDOWN: 
@@ -446,19 +419,7 @@ LRESULT CALLBACK helix2d::Window::WndProc(HWND hWnd, UINT msg, WPARAM wparam, LP
 		else if (msg == WM_MBUTTONDOWN) { key = MouseCode::Mid; }
 		else if (msg == WM_RBUTTONDOWN) { key = MouseCode::Right; }
 
-		auto it = std::find(
-			window->downMouse.begin(),
-			window->downMouse.end(),
-			key
-		);
-
-		if (it == window->downMouse.end())
-		{
-			window->downMouse.push_back(key);
-			window->downPressMouse.push_back(key);
-			window->downMouseTime[key] = clock() / 1000.f;
-		}
-
+		Input::addMouseCode(window, key);
 		break;
 	}
 	case WM_LBUTTONUP:
@@ -470,22 +431,7 @@ LRESULT CALLBACK helix2d::Window::WndProc(HWND hWnd, UINT msg, WPARAM wparam, LP
 		else if (msg == WM_MBUTTONUP) { key = MouseCode::Mid; }
 		else if (msg == WM_RBUTTONUP) { key = MouseCode::Right; }
 
-		auto it = std::find(
-			window->downMouse.begin(),
-			window->downMouse.end(),
-			key
-		);
-
-		if (it != window->downMouse.end())
-		{
-			window->downMouse.erase(it);
-			window->upPressMouse.push_back(key);
-		}
-		else
-		{
-			window->downMouseTime[key] = -1.f;
-		}
-
+		Input::removeMouseCode(window, key);
 		break;
 	}
 	case WM_ACTIVATE:

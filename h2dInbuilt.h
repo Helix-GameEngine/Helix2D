@@ -1,7 +1,4 @@
 #pragma once
-#include <functional>
-#include <vector>
-#include <mutex>
 
 namespace helix2d
 {

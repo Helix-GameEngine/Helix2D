@@ -87,19 +87,33 @@ namespace helix2d
 	//输入
 	class Input
 	{
+		friend class Window;
 	public:
 
+		//是否按下指定按键，且按下时间达到多长时间
 		static bool isDown(Window* window, const KeyCode& key, float downTime = 0.0f);
 		static bool isDown(Window* window, const MouseCode& key, float downTime = 0.0f);
 
+		//是否松开指定按键
 		static bool isRelease(Window* window, const KeyCode& key);
 		static bool isRelease(Window* window, const MouseCode& key);
 
+		//是否点击指定按键，且点击时间达到多长时间（抬起时）
 		static bool isUpPress(Window* window, const KeyCode& key, float downTime = 0.0f);
 		static bool isUpPress(Window* window, const MouseCode& key, float downTime = 0.0f);
 
+		//是否点击指定按键（按下时）
 		static bool isDownPress(Window* window, const KeyCode& key);
 		static bool isDownPress(Window* window, const MouseCode& key);
+	private:
+
+		static void addKeyCode(Window* window, const KeyCode& key);
+		static void removeKeyCode(Window* window, const KeyCode& key);
+
+		static void addMouseCode(Window* window, const MouseCode& key);
+		static void removeMouseCode(Window* window, const MouseCode& key);
+
+		static KeyCode getLRKeyCode(const KeyCode& key, LPARAM lparam);
 	};
 
 	//鼠标键码
@@ -121,12 +135,19 @@ namespace helix2d
 		Enter = VK_RETURN,
 		Space = VK_SPACE,
 		Esc = VK_ESCAPE,
+
+		Ctrl = VK_CONTROL,
 		LCtrl = VK_LCONTROL,
 		RCtrl = VK_RCONTROL,
+
+		Shift = VK_SHIFT,
 		LShift = VK_LSHIFT,
 		RShift = VK_RSHIFT,
+
+		Alt = VK_MENU,
 		LAlt = VK_LMENU,
 		RAlt = VK_RMENU,
+
 		Tab = VK_TAB,
 		Delete = VK_DELETE,
 		Back = VK_BACK,
@@ -215,5 +236,21 @@ namespace helix2d
 		RSquareBrackets = VK_OEM_6,
 		Apostrophe = VK_OEM_7,
 		Tilde = VK_OEM_3,
+	};
+
+	class Math
+	{
+	public:
+
+		//圆周率
+		static const float Pi;
+		static const float e;
+	public:
+
+		//角度转弧度
+		static float getRadian(float angle);
+
+		//弧度转角度
+		static float getAngle(float radian);
 	};
 }

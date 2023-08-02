@@ -79,8 +79,6 @@ namespace helix2d
 
 		void update(float delta) override;
 	private:
-		
-		float v;
 
 		float gravity;
 	};

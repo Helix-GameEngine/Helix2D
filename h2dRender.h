@@ -455,6 +455,12 @@ namespace helix2d
 		//更新属性
 		static void updateProperty(Window* window);
 
+		//更新Tick
+		static void updateTick(Window* window, float delta);
+
+		//更新渲染
+		static void updateRender(Window* window);
+
 		//每帧最后更新一次
 		static void updateEnd(Window* window, float delta);
 	protected:
