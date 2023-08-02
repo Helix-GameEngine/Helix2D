@@ -92,17 +92,23 @@ bool helix2d::Image::load(std::wstring path)
 
 void helix2d::Image::uninit()
 {
-	for (auto& prprBitmap : D2DimgList)
+	if (!D2DimgList.empty())
 	{
-		prprBitmap.second.second = false;
-		SafeRelease(prprBitmap.second.first);
+		for (auto& prprBitmap : D2DimgList)
+		{
+			prprBitmap.second.second = false;
+			SafeRelease(prprBitmap.second.first);
+		}
+		D2DimgList.clear();
 	}
-	D2DimgList.clear();
 
-	for (auto& prImage : imgList)
+	if (!imgList.empty())
 	{
-		delete prImage.second;
-		prImage.second = nullptr;
+		for (auto& prImage : imgList)
+		{
+			delete prImage.second;
+			prImage.second = nullptr;
+		}
+		imgList.clear();
 	}
-	imgList.clear();
 }

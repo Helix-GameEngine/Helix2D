@@ -11,13 +11,13 @@
 
 #pragma comment(lib, "windowscodecs.lib")
 
-#ifndef H2D_LIBHELIX2D
-#define H2D_LIBHELIX2D
-#pragma comment(lib,"libhelix2d")
-#endif // !H2D_LIBHELIX2D
-
-
 #include <vector>
+
+#ifndef _LIB_HELIX2D_
+#define _LIB_HELIX2D_
+#pragma comment(lib,"libhelix2d")
+#endif // !_LIB_HELIX2D_
+
 
 
 template <typename resource>

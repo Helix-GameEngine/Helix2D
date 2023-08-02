@@ -19,6 +19,8 @@ helix2d::Window::Window(
 	unsigned int fps
 )
 {
+	//保证Initialize文件内容被包含进lib
+	Initialize::function();
 
 	{
 		wc = WNDCLASSEXW();

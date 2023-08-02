@@ -9,6 +9,11 @@ using namespace helix2d::Inbuilt;
 Initialize Initialize::init;
 bool Initialize::bGameDone = false;
 
+void helix2d::Inbuilt::Initialize::function(void)
+{
+	//保证文件被包含进lib
+}
+
 Initialize::Initialize()
 {
 	auto hr = CoInitializeEx(

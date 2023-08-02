@@ -7,6 +7,9 @@ namespace helix2d
 		//≥ı ºªØ¿‡
 		class Initialize
 		{
+		public:
+
+			static void function(void);
 		private:
 
 			Initialize();
