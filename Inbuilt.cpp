@@ -33,5 +33,5 @@ helix2d::Inbuilt::Initialize::~Initialize()
 	Sleep(1);
 	
 	Window::uninit();
-	Image::uninit();
+	//Image::uninit();		//既然我解决不了问题，那就让操作系统去解决吧~~~
 }

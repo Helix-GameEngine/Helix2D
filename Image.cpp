@@ -94,8 +94,9 @@ void helix2d::Image::uninit()
 {
 	if (!D2DimgList.empty())
 	{
-		for (auto& prprBitmap : D2DimgList)
+		for (auto it = D2DimgList.begin(); it != D2DimgList.end(); it++)
 		{
+			auto& prprBitmap = *it;
 			prprBitmap.second.second = false;
 			SafeRelease(prprBitmap.second.first);
 		}
@@ -104,8 +105,9 @@ void helix2d::Image::uninit()
 
 	if (!imgList.empty())
 	{
-		for (auto& prImage : imgList)
+		for (auto it = imgList.begin(); it != imgList.end(); it++)
 		{
+			auto& prImage = *it;
 			delete prImage.second;
 			prImage.second = nullptr;
 		}
