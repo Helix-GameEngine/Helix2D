@@ -65,7 +65,7 @@ void helix2d::Module::updateTypeModule(Window* window, float delta, Type type)
 
 		if (mod->modType == type)
 		{
-			mod->update(delta);
+			mod->Update(delta);
 		}
 	}
 }
@@ -85,7 +85,7 @@ float helix2d::Gravity::getGravity() const
 	return gravity;
 }
 
-void helix2d::Gravity::update(float delta)
+void helix2d::Gravity::Update(float delta)
 {
 	parent->addVelocity(0.0f, gravity * delta * 50.0f * 9.8f);
 }

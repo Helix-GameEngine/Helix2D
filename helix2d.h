@@ -11,5 +11,6 @@
 #include "h2dText.h"
 #include "h2dImage.h"
 #include "h2dCamera.h"
+#include "h2dMask.h"
 
 #include "h2dModule.h"

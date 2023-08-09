@@ -468,7 +468,7 @@ void helix2d::Painter::updateRender(Window* window)
 	{
 		for (size_t i = 0; i < window->getAllPainter().size(); i++)
 		{
-			window->getAllPainter()[i]->Paint();
+			window->getAllPainter()[i]->paint();
 		}
 	}
 }
@@ -484,22 +484,22 @@ void helix2d::Painter::updateEnd(Window* window, float delta)
 	}
 }
 
-void helix2d::Painter::Paint()
+void helix2d::Painter::paint()
 {
 	_render();
 }
 
-void helix2d::Painter::Paint(Vector2 pos, float angle)
+void helix2d::Painter::paint(Vector2 pos, float angle)
 {
 	_render(pos, angle, window);
 }
 
-void helix2d::Painter::Paint(Window* window)
+void helix2d::Painter::paint(Window* window)
 {
 	_render(pos, angle, window);
 }
 
-void helix2d::Painter::Paint(Vector2 pos, float angle, Window* window)
+void helix2d::Painter::paint(Vector2 pos, float angle, Window* window)
 {
 	_render(pos, angle, window);
 }
@@ -637,8 +637,10 @@ void helix2d::Painter::_render()
 
 		for (auto painter : painterList)
 		{
-			painter->Paint();
+			painter->paint();
 		}
+
+		AfterChildRender();
 
 		pTarget->SetTransform(original);
 	}
@@ -693,7 +695,7 @@ void helix2d::Painter::_updateModule(float delta)	//±¸ÓÃ
 
 	for (auto pMod : modList)
 	{
-		pMod->update(delta);
+		pMod->Update(delta);
 	}
 }
 
@@ -720,6 +722,8 @@ void helix2d::Painter::updateProperty()
 	}
 
 	realPos = rotationMatrix.TransformPoint(worldPos);
+
+	UpdateProperty();
 
 	for (auto& painter : painterList)
 	{

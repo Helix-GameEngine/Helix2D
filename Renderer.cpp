@@ -227,6 +227,8 @@ void helix2d::Renderer::_render(float delta)
 		return;
 	}
 
+	HRESULT hr = S_OK;
+
 	//»æÖÆ±³¾°
 	pD2D1RenderTarget->BeginDraw();
 	pD2D1RenderTarget->Clear(window->backgroundColor);
@@ -239,7 +241,7 @@ void helix2d::Renderer::_render(float delta)
 
 	Painter::updateRender(window);
 
-	pD2D1RenderTarget->EndDraw();
+	hr = pD2D1RenderTarget->EndDraw();
 }
 
 helix2d::Color::Color()

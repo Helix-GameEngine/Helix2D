@@ -46,6 +46,9 @@
     <Filter Include="头文件\source\Render\Camera">
       <UniqueIdentifier>{ca8399f7-ae04-484b-9eac-a8377a44be0e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\source\Render\Mask">
+      <UniqueIdentifier>{47b05edb-3591-41d3-89b1-e13340fe40e6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Window.cpp">
@@ -81,6 +84,9 @@
     <ClCompile Include="Camera.cpp">
       <Filter>头文件\source\Render\Camera</Filter>
     </ClCompile>
+    <ClCompile Include="Mask.cpp">
+      <Filter>头文件\source\Render\Mask</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="h2dBase.h">
@@ -115,6 +121,9 @@
     </ClInclude>
     <ClInclude Include="helix2d.h">
       <Filter>头文件\source</Filter>
+    </ClInclude>
+    <ClInclude Include="h2dMask.h">
+      <Filter>头文件\source\Render\Mask</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

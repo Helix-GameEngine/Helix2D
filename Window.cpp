@@ -1,6 +1,9 @@
 #include "h2dBase.h"
 #include "h2dCamera.h"
 using namespace helix2d::Inbuilt;
+#include <thread>
+#include <chrono>
+using namespace std::chrono;
 
 /******************************************/
 
@@ -246,7 +249,7 @@ void helix2d::Window::create()
 		}
 
 		// 计算窗口大小
-		DWORD dwStyle = WS_OVERLAPPEDWINDOW &~ WS_MAXIMIZEBOX &~ WS_THICKFRAME;
+		DWORD dwStyle = (WS_OVERLAPPEDWINDOW & ~WS_MAXIMIZEBOX & ~WS_THICKFRAME) | WS_EX_LAYERED;
 		RECT wr = { 0, 0, static_cast<LONG>(this->width), static_cast<LONG>(this->height) };
 		::AdjustWindowRectEx(&wr, dwStyle, FALSE, NULL);
 		// 获取新的宽高
@@ -285,7 +288,7 @@ void helix2d::Window::create()
 	}
 }
 
-void helix2d::Window::update(float delta)
+void helix2d::Window::Update(float delta)
 {
 	static MSG msg{};
 
@@ -504,32 +507,63 @@ LRESULT CALLBACK helix2d::Window::WndProc(HWND hWnd, UINT msg, WPARAM wparam, LP
 
 void helix2d::Window::winControl(Window* window)
 {
-	DWORD LastTime = clock();
-	DWORD NewTime = LastTime;
 
 	auto hr = CoInitializeEx(
 		NULL, 
 		COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE
 	);
 
+	nanoseconds IntervalTime{};
+
+	if (window->fps > 0)
+	{
+		IntervalTime = duration_cast<nanoseconds>(seconds(1)) / window->fps;
+	}
+	else
+	{
+		IntervalTime = nanoseconds(0);
+	}
+	
+	steady_clock::time_point LastTime{};
+	steady_clock::time_point NewTime{};
+	steady_clock::time_point FixedTime{};
+
+	LastTime = NewTime = FixedTime = steady_clock::now();
+
 	while (true)
 	{
+		NewTime = steady_clock::now();
+
 		if (window->bWindowDone || bAllWindowDone)
 		{
 			return;
 		}
 
-		if (NewTime - LastTime >= (DWORD)(1000.0f / window->fps))
+		if (IntervalTime < (NewTime - FixedTime))
 		{
 			//窗口创建
 			window->create();
 
 			//更新
-			window->update((clock() - LastTime) / 1000.0f);
+			window->Update(duration_cast<microseconds>(NewTime - LastTime).count() / 1000.f / 1000.f);
+
+			FixedTime += IntervalTime;
 
 			LastTime = NewTime;
+			NewTime = steady_clock::now();
 		}
-
-		NewTime = clock();
+		else
+		{
+			if (IntervalTime.count())
+			{
+				// 计算挂起时长
+				auto wait = duration_cast<nanoseconds>(IntervalTime - (NewTime - FixedTime));
+				if (wait > milliseconds(1))
+				{
+					// 挂起线程，释放 CPU 占用
+					std::this_thread::sleep_for(wait);
+				}
+			}
+		}
 	}
 }

@@ -6,7 +6,6 @@
 #include <string>
 #include <vector>
 #include <map>
-#include <thread>
 #include <mutex>
 
 namespace helix2d
@@ -79,7 +78,7 @@ namespace helix2d
 		void create();
 
 		//更新窗口
-		void update(float delta);
+		void Update(float delta);
 
 		//清除输入
 		void clearInput();

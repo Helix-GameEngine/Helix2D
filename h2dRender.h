@@ -439,10 +439,11 @@ namespace helix2d
 	public:
 
 		//绘制图像
-		void Paint();
-		void Paint(Vector2 pos, float angle);
-		void Paint(Window* window);
-		void Paint(Vector2 pos, float angle, Window* window);
+		void paint();
+		void paint(Vector2 pos, float angle);
+		void paint(Window* window);
+		void paint(Vector2 pos, float angle, Window* window);
+	public:
 
 		//每帧调用一次
 		virtual void Tick(float delta) {};
@@ -467,6 +468,12 @@ namespace helix2d
 
 		//渲染
 		virtual void Render() {};
+
+		//在子画家渲染之后调用
+		virtual void AfterChildRender() {};
+
+		//在更新属性时调用
+		virtual void UpdateProperty() {};
 	private:
 
 		void _render();

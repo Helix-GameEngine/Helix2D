@@ -44,7 +44,7 @@ namespace helix2d
 	protected:
 
 		//更新
-		virtual void update(float delta) {};
+		virtual void Update(float delta) {};
 	private:
 
 		//更新特定类型模块
@@ -77,7 +77,7 @@ namespace helix2d
 		float getGravity()const;
 	private:
 
-		void update(float delta) override;
+		void Update(float delta) override;
 	private:
 
 		float gravity;
