@@ -3,6 +3,7 @@
 #include <wincodec.h>
 #include <dwrite.h>
 #include <dwrite_3.h>
+#include <dwmapi.h>
 #pragma comment(lib, "d2d1.lib")
 #pragma comment(lib, "dwrite.lib")
 
@@ -10,6 +11,7 @@
 #pragma comment(lib, "dxguid.lib")
 
 #pragma comment(lib, "windowscodecs.lib")
+#pragma comment(lib, "dwmapi.lib")
 
 #include <vector>
 

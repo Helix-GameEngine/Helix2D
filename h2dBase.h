@@ -77,6 +77,9 @@ namespace helix2d
 		//创建窗口
 		void create();
 
+		//设置透明模式
+		void setAlphaWindow();
+
 		//更新窗口
 		void Update(float delta);
 

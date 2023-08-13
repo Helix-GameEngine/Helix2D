@@ -4,6 +4,7 @@ using namespace helix2d::Inbuilt;
 #include <thread>
 #include <chrono>
 using namespace std::chrono;
+#include <VersionHelpers.h>
 
 /******************************************/
 
@@ -35,6 +36,7 @@ helix2d::Window::Window(
 		this->height = height;
 
 		this->parent = parent;
+
 		this->fps = fps;
 
 		renderer = new Renderer(this);
@@ -88,7 +90,7 @@ helix2d::Window::~Window()
 
 	for (auto& painter : painterList)
 	{
-		painter->window = nullptr;	//...
+		painter->setWindow(nullptr);
 	}
 
 	painterList.clear();
@@ -282,9 +284,44 @@ void helix2d::Window::create()
 		}
 		else
 		{
+			setAlphaWindow();
+
 			ShowWindow(this->hWnd, SW_SHOWNORMAL);
 			this->bCreated = true;
 		}
+	}
+}
+
+void helix2d::Window::setAlphaWindow()
+{
+	if (!::IsWindowsVistaOrGreater())
+	{
+		return;
+	}
+
+	//当前颜色
+	DWORD currColor{};
+
+	//颜色是否为透明混合
+	BOOL isOpaque{};
+
+	auto hr = ::DwmGetColorizationColor(&currColor, &isOpaque);
+
+	if (!isOpaque || IsWindows8OrGreater())
+	{
+		HRGN rgn = ::CreateRectRgn(0, 0, -1, -1);
+		DWM_BLURBEHIND blurBehind{};
+		blurBehind.dwFlags = DWM_BB_ENABLE | DWM_BB_BLURREGION;
+		blurBehind.hRgnBlur = rgn;
+		blurBehind.fEnable = true;
+		::DwmEnableBlurBehindWindow(hWnd, &blurBehind);
+		::DeleteObject(rgn);
+	}
+	else
+	{
+		DWM_BLURBEHIND blurBehind{};
+		blurBehind.dwFlags = DWM_BB_ENABLE;
+		::DwmEnableBlurBehindWindow(hWnd, &blurBehind);
 	}
 }
 
@@ -514,15 +551,6 @@ void helix2d::Window::winControl(Window* window)
 	);
 
 	nanoseconds IntervalTime{};
-
-	if (window->fps > 0)
-	{
-		IntervalTime = duration_cast<nanoseconds>(seconds(1)) / window->fps;
-	}
-	else
-	{
-		IntervalTime = nanoseconds(0);
-	}
 	
 	steady_clock::time_point LastTime{};
 	steady_clock::time_point NewTime{};
@@ -537,6 +565,15 @@ void helix2d::Window::winControl(Window* window)
 		if (window->bWindowDone || bAllWindowDone)
 		{
 			return;
+		}
+
+		if (window->fps > 0)
+		{
+			IntervalTime = duration_cast<nanoseconds>(seconds(1)) / window->fps;
+		}
+		else
+		{
+			IntervalTime = nanoseconds(0);
 		}
 
 		if (IntervalTime < (NewTime - FixedTime))

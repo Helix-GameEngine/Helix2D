@@ -179,8 +179,13 @@ bool helix2d::Renderer::createDeviceResources()
 
 	if (SUCCEEDED(hr))
 	{
+		D2D1_RENDER_TARGET_PROPERTIES prop = D2D1::RenderTargetProperties(
+			D2D1_RENDER_TARGET_TYPE_DEFAULT,
+			D2D1::PixelFormat(DXGI_FORMAT_B8G8R8A8_UNORM, D2D1_ALPHA_MODE_PREMULTIPLIED)
+		);
+
 		hr = pD2D1Factory->CreateHwndRenderTarget(
-			D2D1::RenderTargetProperties(),
+			prop,
 			D2D1::HwndRenderTargetProperties(
 				hWnd,
 				size,
