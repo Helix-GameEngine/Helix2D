@@ -29,6 +29,11 @@ helix2d::Renderer::Renderer(Window* window)
 	bDeviceResourceRecreated = false;
 }
 
+helix2d::Renderer::~Renderer()
+{
+	discardDeviceResources();
+}
+
 bool helix2d::Renderer::createDeviceIndependentResources()
 {
 	if (pD2D1Factory != nullptr)

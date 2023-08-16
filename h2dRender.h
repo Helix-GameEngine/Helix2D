@@ -16,7 +16,7 @@ namespace helix2d
 
 		explicit Renderer(Window* window);
 
-		Renderer();
+		~Renderer();
 	public:
 
 		//创建设备相关资源
