@@ -54,10 +54,16 @@ void helix2d::Painter::addPainter(Painter* pPainter)
 
 void helix2d::Painter::addModule(Module* pMod)
 {
-	if (std::find(modList.begin(), modList.end(), pMod) != modList.end())
+	if (pMod == nullptr)
 	{
 		return;
 	}
+
+	if (pMod->parent)
+	{
+		return;
+	}
+
 	pMod->parent = this;
 	modList.push_back(pMod);
 	bSortModule = true;
