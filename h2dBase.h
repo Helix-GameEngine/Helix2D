@@ -6,7 +6,6 @@
 #include <string>
 #include <vector>
 #include <map>
-#include <mutex>
 
 namespace helix2d
 {
@@ -35,9 +34,13 @@ namespace helix2d
 
 		//添加画家
 		void addPainter(Painter* pPainter);	
+		void addPainter(Painter* pPainter, std::wstring name);
 
 		//移除画家
 		bool removePainter(Painter* pPainter);
+
+		//从子画家中查找画家
+		Painter* findPainter(std::wstring name);
 	public:
 
 		//设置窗口背景颜色
@@ -145,8 +148,6 @@ namespace helix2d
 		static bool bAllWindowDone;
 
 		static std::vector<Window*> allWindows;
-
-		static std::mutex mtx_allwin;
 	private:
 
 		static void winControl(Window* window);

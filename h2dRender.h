@@ -1,6 +1,7 @@
 #pragma once
 #include "h2dMacros.h"
 #include "h2dTool.h"
+#include <string>
 #include <vector>
 
 namespace helix2d
@@ -246,6 +247,7 @@ namespace helix2d
 
 		//添加子画家
 		void addPainter(Painter* pPainter);
+		void addPainter(Painter* pPainter, std::wstring name);
 
 		//添加模块
 		void addModule(Module* pMod);
@@ -255,6 +257,9 @@ namespace helix2d
 
 		//移除模块
 		bool removeModule(Module* pMod);
+
+		//从子画家中查找画家
+		Painter* findPainter(std::wstring name);
 	public:
 
 		//设置坐标
@@ -298,6 +303,9 @@ namespace helix2d
 
 		//设置渲染顺序
 		void setOrder(size_t nOrder);
+
+		//设置名字
+		void setName(std::wstring name);
 
 		//设置是否启用Tick方法
 		void enableTick(bool b);
@@ -425,6 +433,9 @@ namespace helix2d
 
 		//获取渲染顺序
 		size_t getOrder()const;
+
+		//获取名字
+		std::wstring getName()const;
 	public:
 
 		//是否与其他画家重叠
@@ -509,6 +520,8 @@ namespace helix2d
 		Color color;
 
 		size_t order;
+
+		std::wstring name;
 	protected:
 
 		Vector2 velocity;

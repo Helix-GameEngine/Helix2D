@@ -1,5 +1,6 @@
 #pragma once
 #include "h2dMacros.h"
+#include <string>
 
 namespace helix2d
 {
@@ -238,6 +239,7 @@ namespace helix2d
 		Tilde = VK_OEM_3,
 	};
 
+	//数学计算
 	class Math
 	{
 	public:
@@ -252,5 +254,28 @@ namespace helix2d
 
 		//弧度转角度
 		static float getAngle(float radian);
+	};
+
+	//日志
+	class Logger
+	{
+	public:
+
+		static void warning(std::wstring detail);
+
+		static void error(std::wstring detail);
+
+		static void message(std::wstring detail);
+
+		static void enableWarning(bool b);
+
+		static void enableError(bool b);
+
+		static void enableMessage(bool b);
+	private:
+
+		static bool isEnableWarning;
+		static bool isEnableError;
+		static bool isEnableMessage;
 	};
 }

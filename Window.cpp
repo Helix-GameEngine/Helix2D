@@ -14,8 +14,6 @@ bool helix2d::Window::bAllWindowDone = false;
 
 std::vector<helix2d::Window*> helix2d::Window::allWindows;
 
-std::mutex helix2d::Window::mtx_allwin;
-
 helix2d::Window::Window(
 	std::wstring title,
 	unsigned int width, unsigned int height,
@@ -48,11 +46,7 @@ helix2d::Window::Window(
 		bWindowDone = false;
 	}
 
-	if(mtx_allwin.try_lock())
-	{
-		allWindows.push_back(this);
-		mtx_allwin.unlock();
-	}
+	allWindows.push_back(this);
 
 	std::thread winThread{ &Window::winControl ,this };
 	winThread.detach();
@@ -65,15 +59,11 @@ helix2d::Window::~Window()
 	bool bExit{ false };
 	while (true)
 	{
-		if (mtx_allwin.try_lock())
+		if (allWindows.size() == 1)
 		{
-			if (allWindows.size() == 1)
-			{
-				bExit = true;
-			}
-			mtx_allwin.unlock();
-			break;
+			bExit = true;
 		}
+		break;
 	}
 	if (bExit)
 	{
@@ -108,17 +98,36 @@ helix2d::Window::~Window()
 
 void helix2d::Window::addPainter(Painter* pPainter)
 {
-	if (std::find(painterList.begin(), painterList.end(), pPainter) 
-		!= painterList.end())
+	if (pPainter == nullptr)
 	{
+		Logger::warning(L"The added Painter is nullptr. The Painter will not be added.");
 		return;
 	}
 
-	if (pPainter != nullptr && pPainter->window == nullptr)
+	if (pPainter->parent || pPainter->window)
 	{
-		pPainter->setWindow(this);
-		painterList.push_back(pPainter);
+		Logger::warning(L"The added Painter has been added under any Painter or Window. The Painter will not be added.");
+		return;
 	}
+
+	for (size_t i = 0; i < painterList.size(); i++)
+	{
+		auto p = painterList[i];
+		if (p->name == pPainter->name)
+		{
+			Logger::warning(L"The name of the Painter has been repeated. The Painter will not be added.");
+			return;
+		}
+	}
+
+	pPainter->setWindow(this);
+	painterList.push_back(pPainter);
+}
+
+void helix2d::Window::addPainter(Painter* pPainter, std::wstring name)
+{
+	pPainter->setName(name);
+	addPainter(pPainter);
 }
 
 bool helix2d::Window::removePainter(Painter* pPainter)
@@ -130,6 +139,30 @@ bool helix2d::Window::removePainter(Painter* pPainter)
 		return true;
 	}
 	return false;
+}
+
+helix2d::Painter* helix2d::Window::findPainter(std::wstring name)
+{
+	//空名字（默认名字）则不查找
+	if (name.empty())
+	{
+		return nullptr;
+	}
+
+	//开始查找Painter
+	auto it = std::find_if(painterList.begin(), painterList.end(),
+		[name](Painter* painter) {
+			return painter->getName() == name;
+		}
+	);
+
+	//检测是否有该Painter
+	if (it == painterList.end())
+	{
+		return nullptr;
+	}
+
+	return (*it);
 }
 
 void helix2d::Window::setBackgroundColor(const Color& c)
@@ -492,15 +525,11 @@ LRESULT CALLBACK helix2d::Window::WndProc(HWND hWnd, UINT msg, WPARAM wparam, LP
 		bool bExit{ false };
 		while (true)
 		{
-			if (mtx_allwin.try_lock())
+			if (allWindows.size() == 1)
 			{
-				if (allWindows.size() == 1)
-				{
-					bExit = true;
-				}
-				mtx_allwin.unlock();
-				break;
+				bExit = true;
 			}
+			break;
 		}
 		if (bExit)
 		{
@@ -510,28 +539,25 @@ LRESULT CALLBACK helix2d::Window::WndProc(HWND hWnd, UINT msg, WPARAM wparam, LP
 
 		while (true)
 		{
-			if (mtx_allwin.try_lock())
-			{
-				window->bCreated = false;
-				window->bWindowDone = true;
+			window->bCreated = false;
+			window->bWindowDone = true;
 
-				window->hWnd = HWND();
-				window->wc = WNDCLASSEXW();
-				window->painterList.clear();
-				window->clearInput();
-				delete window->renderer;
+			window->hWnd = HWND();
+			window->wc = WNDCLASSEXW();
+			window->painterList.clear();
+			window->clearInput();
+			delete window->renderer;
 
-				UnregisterClassW(window->wc.lpszClassName,
-					HINST_THISCOMPONENT);
+			UnregisterClassW(window->wc.lpszClassName,
+				HINST_THISCOMPONENT);
 
-				allWindows.erase(
-					std::find(
-						allWindows.begin(), allWindows.end(), window)
-				);
+			allWindows.erase(
+				std::find(
+					allWindows.begin(), allWindows.end(), window)
+			);
 
-				mtx_allwin.unlock();
-				break;
-			}
+				
+			break;
 		}
 
 		break;

@@ -23,7 +23,7 @@ std::wstring helix2d::Image::getPath() const
 
 bool helix2d::Image::load(std::wstring path)
 {
-	if (imgList[path] != nullptr)
+	if (imgList.count(path))
 	{
 		return true;
 	}

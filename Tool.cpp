@@ -2,6 +2,8 @@
 #include "h2dBase.h"
 #include <vector>
 #include <map>
+#include <time.h>
+#include <iostream>
 
 helix2d::Vector2::Vector2()
 {
@@ -407,4 +409,47 @@ float helix2d::Math::getRadian(float angle)
 float helix2d::Math::getAngle(float radian)
 {
 	return (radian * 180.0f / Math::Pi);
+}
+
+bool helix2d::Logger::isEnableError = true;
+bool helix2d::Logger::isEnableMessage = true;
+bool helix2d::Logger::isEnableWarning = true;
+
+void helix2d::Logger::warning(std::wstring detail)
+{
+	if (isEnableWarning)
+	{
+		std::wcout << L"Helix2D Warning: " << detail << "\n";
+	}
+}
+
+void helix2d::Logger::error(std::wstring detail)
+{
+	if (isEnableWarning)
+	{
+		std::wcout << L"Helix2D Error: " << detail << "\n";
+	}
+}
+
+void helix2d::Logger::message(std::wstring detail)
+{
+	if (isEnableWarning)
+	{
+		std::wcout << L"Helix2D Message: " << detail << "\n";
+	}
+}
+
+void helix2d::Logger::enableWarning(bool b)
+{
+	isEnableWarning = b;
+}
+
+void helix2d::Logger::enableError(bool b)
+{
+	isEnableError = b;
+}
+
+void helix2d::Logger::enableMessage(bool b)
+{
+	isEnableMessage = b;
 }

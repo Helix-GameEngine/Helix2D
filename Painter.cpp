@@ -36,12 +36,24 @@ void helix2d::Painter::addPainter(Painter* pPainter)
 {
 	if (pPainter == nullptr)
 	{
+		Logger::warning(L"The added Painter is nullptr. The Painter will not be added.");
 		return;
 	}
 
 	if (pPainter->parent || pPainter->window)
 	{
+		Logger::warning(L"The added Painter has been added under any Painter or Window. The Painter will not be added.");
 		return;
+	}
+
+	for (size_t i = 0; i < painterList.size(); i++)
+	{
+		auto p = painterList[i];
+		if (p->name == pPainter->name)
+		{
+			Logger::warning(L"The name of the Painter has been repeated. The Painter will not be added.");
+			return;
+		}
 	}
 
 	pPainter->setWindow(window);
@@ -50,6 +62,12 @@ void helix2d::Painter::addPainter(Painter* pPainter)
 	painterList.push_back(pPainter);
 
 	updateProperty();
+}
+
+void helix2d::Painter::addPainter(Painter* pPainter, std::wstring name)
+{
+	pPainter->setName(name);
+	addPainter(pPainter);
 }
 
 void helix2d::Painter::addModule(Module* pMod)
@@ -88,6 +106,30 @@ bool helix2d::Painter::removeModule(Module* pMod)
 		return true;
 	}
 	return false;
+}
+
+helix2d::Painter* helix2d::Painter::findPainter(std::wstring name)
+{
+	//空名字（默认名字）则不查找
+	if (name.empty())
+	{
+		return nullptr;
+	}
+
+	//开始查找Painter
+	auto it = std::find_if(painterList.begin(), painterList.end(),
+		[name](Painter* painter) {
+			return painter->getName() == name;
+		}
+	);
+
+	//检测是否有该Painter
+	if (it == painterList.end())
+	{
+		return nullptr;
+	}
+
+	return (*it);
 }
 
 void helix2d::Painter::rotate(float angle)
@@ -250,6 +292,11 @@ void helix2d::Painter::setOrder(size_t nOrder)
 {
 	order = nOrder;
 	bSortOrder = true;
+}
+
+void helix2d::Painter::setName(std::wstring name)
+{
+	this->name = name;
 }
 
 void helix2d::Painter::setMass(float m)
@@ -596,6 +643,11 @@ float helix2d::Painter::getMass() const
 size_t helix2d::Painter::getOrder() const
 {
 	return order;
+}
+
+std::wstring helix2d::Painter::getName() const
+{
+	return name;
 }
 
 void helix2d::Painter::_render()
