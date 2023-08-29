@@ -393,32 +393,35 @@ namespace helix2d
 		//获取实际坐标
 		Vector2 getRealPos()const;
 
-		//获取左上角坐标
+		//获取左上角坐标（显示大小下）
+		Vector2 getDisplayUpperleftPos()const;
+
+		//获取左上角坐标（原始大小下）
 		Vector2 getUpperleftPos()const;
-		//获取左上角X坐标
+		//获取左上角X坐标（原始大小下）
 		float getUpperleftPosX()const;
-		//获取左上角Y坐标
+		//获取左上角Y坐标（原始大小下）
 		float getUpperleftPosY()const;
 
-		//获取右下角坐标
+		//获取右下角坐标（原始大小下）
 		Vector2 getLowerrightPos()const;
-		//获取右下角X坐标
+		//获取右下角X坐标（原始大小下）
 		float getLowerrightPosX()const;
-		//获取右下角Y坐标
+		//获取右下角Y坐标（原始大小下）
 		float getLowerrightPosY()const;
 
-		//获取右上角坐标
+		//获取右上角坐标（原始大小下）
 		Vector2 getUpperrightPos()const;
-		//获取右上角X坐标
+		//获取右上角X坐标（原始大小下）
 		float getUpperrightPosX()const;
-		//获取右上角Y坐标
+		//获取右上角Y坐标（原始大小下）
 		float getUpperrightPosY()const;
 
-		//获取左下角坐标
+		//获取左下角坐标（原始大小下）
 		Vector2 getLowerleftPos()const;
-		//获取左下角X坐标
+		//获取左下角X坐标（原始大小下）
 		float getLowerleftPosX()const;
-		//获取左下角Y坐标
+		//获取左下角Y坐标（原始大小下）
 		float getLowerleftPosY()const;
 
 		//获取速度
@@ -507,6 +510,11 @@ namespace helix2d
 		void sortOrder();
 	protected:
 
+		//显示宽度
+		float width;
+		//显示高度
+		float height;
+
 		//实际宽度
 		float realWidth;
 		//实际高度
@@ -549,6 +557,9 @@ namespace helix2d
 
 		//旋转矩阵
 		Matrix3x2 rotationMatrix;
+
+		//实际缩放
+		Scale realScale;
 	private:
 
 		Vector2 anchor;

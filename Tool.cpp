@@ -453,3 +453,30 @@ void helix2d::Logger::enableMessage(bool b)
 {
 	isEnableMessage = b;
 }
+
+std::random_device helix2d::Random::seedGenerator;
+std::default_random_engine helix2d::Random::engine(helix2d::Random::seedGenerator());
+
+double helix2d::Random::range(double min, double max)
+{
+	std::uniform_real_distribution<double> maker(min, max);
+	return maker(seedGenerator);
+}
+
+float helix2d::Random::range(float min, float max)
+{
+	std::uniform_real_distribution<float> maker(min, max);
+	return maker(engine);
+}
+
+int helix2d::Random::range(int min, int max)
+{
+	std::uniform_int_distribution<int> maker(min, max);
+	return maker(engine);
+}
+
+bool helix2d::Random::probability(float probability)
+{
+	std::bernoulli_distribution maker(probability);
+	return maker(engine);
+}

@@ -110,13 +110,16 @@ void helix2d::Window::addPainter(Painter* pPainter)
 		return;
 	}
 
-	for (size_t i = 0; i < painterList.size(); i++)
+	if (!pPainter->name.empty())
 	{
-		auto p = painterList[i];
-		if (p->name == pPainter->name)
+		for (size_t i = 0; i < painterList.size(); i++)
 		{
-			Logger::warning(L"The name of the Painter has been repeated. The Painter will not be added.");
-			return;
+			auto p = painterList[i];
+			if (p->name == pPainter->name)
+			{
+				Logger::warning(L"The name of the Painter has been repeated. The Painter will not be added.");
+				return;
+			}
 		}
 	}
 
@@ -419,6 +422,7 @@ void helix2d::Window::Update(float delta)
 	//¸üÐÂ
 	if (this->bCreated)
 	{
+		Tick(delta);
 		this->renderer->_render(delta);
 	}
 

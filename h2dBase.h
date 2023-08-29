@@ -75,6 +75,9 @@ namespace helix2d
 	public:
 
 		static void uninit();
+	protected:
+
+		virtual void Tick(float deltaTime) {};
 	private:
 
 		//´´½¨´°¿Ú

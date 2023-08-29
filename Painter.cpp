@@ -13,6 +13,12 @@ helix2d::Painter::Painter()
 	angle = 0.0f;
 	scale = Scale(1.0f, 1.0f);
 
+	realWidth = 0.0f;
+	realHeight = 0.0f;
+
+	width = 0.0f;
+	height = 0.0f;
+
 	fFlipX = 1.0f;
 	fFlipY = 1.0f;
 
@@ -46,13 +52,16 @@ void helix2d::Painter::addPainter(Painter* pPainter)
 		return;
 	}
 
-	for (size_t i = 0; i < painterList.size(); i++)
+	if (!pPainter->name.empty())
 	{
-		auto p = painterList[i];
-		if (p->name == pPainter->name)
+		for (size_t i = 0; i < painterList.size(); i++)
 		{
-			Logger::warning(L"The name of the Painter has been repeated. The Painter will not be added.");
-			return;
+			auto p = painterList[i];
+			if (p->name == pPainter->name)
+			{
+				Logger::warning(L"The name of the Painter has been repeated. The Painter will not be added.");
+				return;
+			}
 		}
 	}
 
@@ -211,11 +220,13 @@ void helix2d::Painter::setPosY(float y)
 void helix2d::Painter::setScale(Scale scale)
 {
 	this->scale = scale;
+	updateProperty();
 }
 
 void helix2d::Painter::setScale(float scaleX, float scaleY)
 {
 	scale = Scale(scaleX, scaleY);
+	updateProperty();
 }
 
 void helix2d::Painter::setAnchor(Vector2 anchor)
@@ -435,6 +446,14 @@ helix2d::Vector2 helix2d::Painter::getRealPos() const
 	return realPos;
 }
 
+helix2d::Vector2 helix2d::Painter::getDisplayUpperleftPos() const
+{
+	return Vector2(
+		worldPos.x - width * anchor.x,
+		worldPos.y - height * anchor.y
+	);
+}
+
 bool helix2d::Painter::isOverlap(const Painter* other) const
 {
 	if (other == nullptr)
@@ -447,17 +466,17 @@ bool helix2d::Painter::isOverlap(const Painter* other) const
 		return false;
 	}
 
-	auto pos1 = this->getUpperleftPos();
-	auto pos2 = other->getUpperleftPos();
+	auto pos1 = getDisplayUpperleftPos();
+	auto pos2 = other->getDisplayUpperleftPos();
 
 	if (
-		(pos1.x >= pos2.x && pos1.x < pos2.x + other->realWidth) ||
-		(pos1.x + realWidth >= pos2.x && pos1.x + realWidth < pos2.x + other->realWidth)
+		(pos1.x >= pos2.x && pos1.x < pos2.x + other->width) ||
+		(pos1.x + width >= pos2.x && pos1.x + width < pos2.x + other->width)
 		)
 	{
 		if (
-			(pos1.y >= pos2.y && pos1.y < pos2.y + other->realHeight) ||
-			(pos1.y + realHeight >= pos2.y && pos1.y + realHeight < pos2.y + other->realHeight)
+			(pos1.y >= pos2.y && pos1.y < pos2.y + other->height) ||
+			(pos1.y + height >= pos2.y && pos1.y + height < pos2.y + other->height)
 			)
 		{
 			return true;
@@ -772,14 +791,20 @@ void helix2d::Painter::updateProperty()
 	{
 		worldPos = pos;
 		rotationMatrix = D2D1::Matrix3x2F::Rotation(angle, worldPos);
+		realScale = scale;
 	}
 	else
 	{
 		worldPos = parent->worldPos + pos;
 		rotationMatrix = D2D1::Matrix3x2F::Rotation(angle, worldPos) * parent->rotationMatrix;
+		realScale.x = scale.x * parent->realScale.x;
+		realScale.y = scale.y * parent->realScale.y;
 	}
 
 	realPos = rotationMatrix.TransformPoint(worldPos);
+
+	width = abs(realScale.x) * realWidth;
+	height = abs(realScale.y) * realHeight;
 
 	UpdateProperty();
 

@@ -1,6 +1,7 @@
 #pragma once
 #include "h2dMacros.h"
 #include <string>
+#include <random>
 
 namespace helix2d
 {
@@ -261,21 +262,51 @@ namespace helix2d
 	{
 	public:
 
+		//警告
 		static void warning(std::wstring detail);
 
+		//错误
 		static void error(std::wstring detail);
 
+		//消息
 		static void message(std::wstring detail);
 
+		//是否启用警告日志
 		static void enableWarning(bool b);
 
+		//是否启用错误日志
 		static void enableError(bool b);
 
+		//是否启用消息日志
 		static void enableMessage(bool b);
 	private:
 
 		static bool isEnableWarning;
 		static bool isEnableError;
 		static bool isEnableMessage;
+	};
+
+	class Random
+	{
+	public:
+
+		template<typename T>
+		static T range(T min, T max)
+		{
+			std::uniform_real_distribution<T> maker(min, max);
+			return static_cast<T>(maker(seedGenerator));
+		}
+
+		static double range(double min, double max);
+
+		static float range(float min, float max);
+
+		static int range(int min, int max);
+
+		static bool probability(float probability);
+	private:
+
+		static std::default_random_engine engine;
+		static std::random_device seedGenerator;
 	};
 }
