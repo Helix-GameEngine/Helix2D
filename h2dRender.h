@@ -69,22 +69,8 @@ namespace helix2d
 	{
 	public:
 
-		Color();
-
-		Color(float r, float g, float b, float a = 1.0f);
-
-		Color(long rgb, float a = 1.0f);
-	public:
-
-		//设置颜色值
-		void setColor(float r, float g, float b, float a = 1.0f);
-		void setColor(long rgb, float a = 1.0f);
-	public:
-
-		operator D2D1_COLOR_F();
-	public:
-
-		enum
+		//颜色值
+		enum 
 		{
 			AliceBlue = 0xF0F8FF,
 			AntiqueWhite = 0xFAEBD7,
@@ -227,6 +213,24 @@ namespace helix2d
 			Yellow = 0xFFFF00,
 			YellowGreen = 0x9ACD32,
 		};
+	public:
+
+		Color();
+
+		Color(float r, float g, float b, float a = 1.0f);
+
+		Color(long rgb, float a = 1.0f);
+	public:
+
+		//设置颜色值
+		void setColor(float r, float g, float b, float a = 1.0f);
+		void setColor(long rgb, float a = 1.0f);
+	public:
+
+		operator D2D1_COLOR_F();
+	public:
+
+		
 	public:
 
 		float r;

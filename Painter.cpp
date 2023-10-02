@@ -710,6 +710,11 @@ void helix2d::Painter::_render()
 			matrix
 		);
 
+		for (size_t i = 0; i < modList.size(); i++)
+		{
+			modList[i]->BeforeRender();
+		}
+
 		Render();
 
 		for (auto painter : painterList)
@@ -718,6 +723,11 @@ void helix2d::Painter::_render()
 		}
 
 		AfterChildRender();
+
+		for (size_t i = 0; i < modList.size(); i++)
+		{
+			modList[i]->AfterChildRender();
+		}
 
 		pTarget->SetTransform(original);
 	}

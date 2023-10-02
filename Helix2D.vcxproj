@@ -132,7 +132,6 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="Inbuilt.cpp" />
-    <ClCompile Include="Mask.cpp" />
     <ClCompile Include="Module.cpp" />
     <ClCompile Include="Painter.cpp" />
     <ClCompile Include="Renderer.cpp" />
@@ -147,7 +146,6 @@
     <ClInclude Include="h2dImage.h" />
     <ClInclude Include="h2dInbuilt.h" />
     <ClInclude Include="h2dMacros.h" />
-    <ClInclude Include="h2dMask.h" />
     <ClInclude Include="h2dModule.h" />
     <ClInclude Include="h2dRender.h" />
     <ClInclude Include="h2dShape.h" />

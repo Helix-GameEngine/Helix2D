@@ -73,12 +73,12 @@ helix2d::Rect::Rect(float side)
 	this->realHeight = side;
 }
 
-void helix2d::Rect::setWidth(float width)
+void helix2d::Rect::setRealWidth(float width)
 {
 	this->realWidth = width;
 }
 
-void helix2d::Rect::setHeight(float height)
+void helix2d::Rect::setRealHeight(float height)
 {
 	this->realHeight = height;
 }
@@ -108,4 +108,76 @@ void helix2d::Rect::Render()
 	pBrush->SetColor(color);
 
 	pTarget->FillRectangle(rect, pBrush);
+}
+
+helix2d::Line::Line()
+{
+	setLineWidth(2.0f);
+}
+
+helix2d::Line::Line(Vector2 ep1, Vector2 ep2, float width)
+{
+	setEndpoint(ep1, ep2);
+	setLineWidth(width);
+}
+
+void helix2d::Line::setEndpoint(Vector2 ep1, Vector2 ep2)
+{
+	endpoint1 = ep1;
+	endpoint2 = ep2;
+
+	realWidth = max(abs(endpoint1.x), abs(endpoint2.x));
+	realHeight = max(abs(endpoint1.y), abs(endpoint2.y));
+}
+
+void helix2d::Line::setLineWidth(float width)
+{
+	lineWidth = width;
+}
+
+void helix2d::Line::getEndpoint(Vector2& ep1, Vector2& ep2) const
+{
+	ep1 = endpoint1;
+	ep2 = endpoint2;
+}
+
+float helix2d::Line::getLineWidth() const
+{
+	return lineWidth;
+}
+
+float helix2d::Line::getRealBoundingWidth() const
+{
+	return realWidth + lineWidth * 0.75f;
+}
+
+float helix2d::Line::getRealBoundingHeight() const
+{
+	return realHeight + lineWidth / 2.0f;
+}
+
+float helix2d::Line::getBoundingWidth() const
+{
+	auto x = width / realWidth;
+	return width + lineWidth * x * 0.75f;
+}
+
+float helix2d::Line::getBoundingHeight() const
+{
+	auto y = height / realHeight;
+	return height + lineWidth * y / 2.0f;
+}
+
+void helix2d::Line::Render()
+{
+	auto* pTarget = window->getRenderer()->pD2D1RenderTarget;
+	auto* pBrush = window->getRenderer()->pD2D1SolidBrush;
+	auto* pStyle = window->getRenderer()->pD2D1RoundStrokeStyle;
+
+	auto upperleft = getUpperleftPos();
+
+	auto p1 = upperleft + endpoint1;
+	auto p2 = upperleft + endpoint2;
+
+	pTarget->DrawLine(p1, p2, pBrush, lineWidth, pStyle);
 }

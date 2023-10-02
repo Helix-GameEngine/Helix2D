@@ -47,10 +47,10 @@ namespace helix2d
 		Rect(float side);
 	public:
 
-		//设置宽度
-		void setWidth(float width);
-		//设置高度
-		void setHeight(float height);
+		//设置实际宽度
+		void setRealWidth(float width);
+		//设置实际高度
+		void setRealHeight(float height);
 	public:
 
 		//获取宽度
@@ -60,5 +60,49 @@ namespace helix2d
 	public:
 
 		void Render()override;
+	};
+
+	//直线
+	class Line :
+		public Painter
+	{
+	public:
+
+		Line();
+
+		Line(Vector2 ep1, Vector2 ep2, float width = 2.0f);
+	public:
+
+		//设置线条端点
+		void setEndpoint(Vector2 ep1, Vector2 ep2);
+
+		//设置线条宽度
+		void setLineWidth(float width);
+	public:
+
+		//获取线条端点
+		void getEndpoint(Vector2& ep1, Vector2& ep2)const;
+
+		//获取线条宽度
+		float getLineWidth()const;
+
+		//获取实际包围宽度
+		float getRealBoundingWidth()const;
+		//获取实际包围高度
+		float getRealBoundingHeight()const;
+
+		//获取实际包围宽度
+		float getBoundingWidth()const;
+		//获取实际包围高度
+		float getBoundingHeight()const;
+	public:
+
+		void Render() override;
+	private:
+
+		Vector2 endpoint1;
+		Vector2 endpoint2;
+
+		float lineWidth;
 	};
 }
